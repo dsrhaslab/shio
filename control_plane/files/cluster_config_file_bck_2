@@ -1,0 +1,9 @@
+controller: cluster
+role: secondary
+own_internal_address: 0.0.0.0:50071
+twin_controller_address: 0.0.0.0:50072
+jobs_config_file: ../files/cluster_jobs_config_file
+policies_rules_file: ../files/policy_4_rules_file_meta_data
+upper_address: 0.0.0.0:50051
+own_upper_address: 0.0.0.0:50052
+own_down_address: 0.0.0.0:50053

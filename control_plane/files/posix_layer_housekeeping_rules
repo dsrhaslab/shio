@@ -1,0 +1,4 @@
+1 create_channel 1000 op_test 1000 no_op op1
+2 create_channel 2000 op_test 2000 no_op op2
+3 create_object 1000 1 op_test no_op op1 drl 10000 5000000000
+4 create_object 2000 1 op_test no_op op2 drl 10000 5000000000

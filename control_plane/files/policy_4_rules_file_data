@@ -1,0 +1,10 @@
+policy: 4
+system_limit:
+      data_op: 2000000
+priority:
+    - id: 1
+      data_op: 200000
+    - id: 2
+      data_op: 400000
+    - id: 3
+      data_op: 600000

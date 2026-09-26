@@ -1,0 +1,8 @@
+controller: global
+role: secondary
+own_internal_address: 0.0.0.0:50061
+twin_controller_address: 0.0.0.0:50062
+housekeeping_rules_file: ../files/posix_layer_housekeeping_rules_meta_data
+policies_rules_file: ../files/policy_4_rules_file_meta_data
+jobs_config_file: ../files/global_jobs_config_file
+own_down_address: 0.0.0.0:50051

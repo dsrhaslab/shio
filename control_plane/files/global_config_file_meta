@@ -1,0 +1,6 @@
+controller: global
+housekeeping_rules_file: ../files/posix_layer_housekeeping_rules_meta
+policies_rules_file: ../files/policy_4_rules_file_meta
+system_admin_rules_file: ../files/system_admin_rules_file
+jobs_config_file: ../files/global_jobs_config_file
+own_down_address: 0.0.0.0:50051

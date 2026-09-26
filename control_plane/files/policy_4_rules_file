@@ -1,0 +1,14 @@
+policy: 4
+system_limit:
+      op1: 1000000
+      op2: 2000000
+priority:
+    - id: 1
+      op1: 100000
+      op2: 200000
+    - id: 2
+      op1: 200000
+      op2: 400000
+    - id: 3
+      op1: 300000
+      op2: 600000

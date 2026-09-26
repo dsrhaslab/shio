@@ -1,0 +1,10 @@
+total_jobs: 0
+jobs:
+    - name: G1V1
+      priority: 1
+    - name: G1V2
+      priority: 1
+    - name: G1V3
+      priority: 1
+    - name: G1V4
+      priority: 1 

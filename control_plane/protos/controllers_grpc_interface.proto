@@ -1,0 +1,146 @@
+// Copyright 2015 gRPC authors.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "io.grpc.examples.controllers_grpc_interface";
+option java_outer_classname = "controllers_grpc_interfaceProto";
+option objc_class_prefix = "HLW";
+
+package controllers_grpc_interface;
+
+service ControllerToLower{
+  rpc ControllerHandshake (SimplifiedHandshakeRaw) returns (ACK) {}
+  rpc MarkStageReady (StageReadyRaw) returns (ACK) {}
+  rpc CreateEnforcementRule (EnforcementRulesMult) returns (ACK) {}
+  rpc CollectGlobalAllStatistics (Empty) returns (StatsGlobalAllMap) {}
+  rpc CollectGlobalStatistics (Empty) returns (StatsGlobalMap) {}
+  rpc CollectGlobalStatisticsAggregated (Empty) returns (StatsGlobalMap) {}
+}
+
+service SupervisorControllerToLowerController{
+  rpc ControllerHandshake (SimplifiedHandshakeRaw) returns (ACK) {}
+  rpc MarkStageReady (StageReadyRaw) returns (ACK) {}
+  rpc CreateEnforcementRule (EnforcementRulesMult) returns (ACK) {}
+  rpc EnforceSystemLimit (OperationsLimits) returns (ACK){}
+  rpc CollectGlobalAllStatistics (Empty) returns (StatsGlobalAllMap) {}
+  rpc CollectCoreControllerStatistics (Empty) returns (StatsGlobalAggregatedMap) {}
+}
+
+
+message OperationsLimits{
+  map<string, uint64> limits_per_operation = 1;
+}
+
+message Empty{
+}
+
+message SimplifiedHandshakeRaw {
+  repeated string rules = 1;
+}
+
+message StageReadyRaw {
+  bool m_mark_stage = 1;
+  string stage_name_env = 2;
+}
+
+message ACK {
+  int32 m_message = 1;
+}
+
+message EnforcementRulesMult {
+  repeated EnforcementStages rules = 1;
+}
+
+message EnforcementStages {
+  string m_operation = 1;
+  string m_stage_name = 2;
+  map<int32, uint64> env_rates = 3;
+}
+
+
+message StatsGlobalAllMap {
+  //<stage, <op, valor>>
+  map<string, StatsGlobalAll > gl_stats = 1;
+};
+
+message StatsGlobalAll {
+  string stage_name = 1;
+  string stage_env = 2;
+  //<op,valor>
+  map<string, uint64> all_rates = 3;
+};
+
+
+message StatsGlobalAggregatedMap {
+  //<op,<prioridade, rate_sum>
+  map<string, StatsRated> per_operation_usage = 1;
+  //<prioridade, counter>
+  map<int32, uint64> counter_per_priority = 2;
+};
+
+message StatsRated {
+  //<prioridade, usage>
+  map<int32, uint64> usage_per_priority = 1;
+};
+
+message StatsGlobalMap {
+  map<string, StatsGlobal > gl_stats = 1;
+};
+
+message StatsGlobal {
+  double m_metadata_total_rate = 1;
+  double m_data_total_rate = 2;
+};
+
+//////
+
+service ControllerToUpper{
+  rpc ConnectToUpper (ConnectRequest) returns (ConnectReply) {}
+  rpc ConnectStageToUpper (StageInfoConnect) returns (ConnectReply) {}
+}
+
+service PrimaryToSecondary{
+  rpc NewLowerController (ConnectRequest) returns (ACK) {}
+}
+
+service SecondaryToPrimary{
+  rpc ConnectToPrimary (Empty) returns (SecondaryBootstrapInfo) {}
+  rpc PingPrimary (Empty) returns (ACK) {} 
+}
+
+message SecondaryBootstrapInfo{
+  SimplifiedHandshakeRaw housekeeping_rules = 1;
+  repeated string lower_controller_addresses = 2;
+}
+
+message ConnectRequest {
+  string user_address = 1;
+}
+
+message StageInfoConnect {
+  string local_address = 1;
+  string stage_name = 2;
+  string stage_env = 3;
+}
+
+message ConnectReply {
+  string message = 1;
+}
+
+
+
+
+
