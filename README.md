@@ -164,30 +164,7 @@ Each run writes its logs (one file per controller and per stage) and the generat
 
 #### 🧪 Running the experiments on Frontera
 
-The scripts used for the paper's experiments are in `frontera_scripts/`. They are submitted through Slurm and launch controllers and stages across nodes with `ibrun`. The `test_*nodes.sh` scripts are the entry points, each targeting a different system size:
-
-```bash
-cd frontera_scripts
-
-sbatch test_50_nodes.sh     # 50 stages
-sbatch test_400nodes.sh     # 400 stages
-sbatch test_2500nodes.sh    # 2,500 stages
-sbatch test_10000nodes.sh   # 10,000 stages
-```
-
-Each entry point calls the matching `shared/call_multiple_op2_*.sh` script, which sets the experiment's topology (cluster controllers, physical nodes, stages per node). It then runs `shared/test_distributed_multi_deallocate_with_jobs_config_file.sh`, which deploys the global, cluster, and local controllers and the data plane stages, replaying the collected traces through PADLL. CPU, memory, and network usage are collected with [Remora](https://github.com/TACC/remora).
-
-The controller setup is selected by the third argument of `call_multiple_op2_*.sh`:
-- `dependability_testing` (default): primary + backup global and cluster controllers, with failure injection (`frontera_scripts/dependability_testing/`), as in §4.3 of the paper;
-- `normal_testing`: single global and cluster controllers (`frontera_scripts/normal_testing/`).
-
-```bash
-./shared/call_multiple_op2_400_try_50_per_node_all.sh test_name "10000nodes_50_100_50_100_50" normal_testing
-```
-
-The jobs deployed in each run (*Configuration A*, workload A1) are defined in `frontera_scripts/jobs_config_files/`, and the controller and policy configuration files in `frontera_scripts/files/`. Scripts to process the outputs are in `frontera_scripts/processing_scripts/`.
-
-> ⚠️ These scripts assume Frontera's environment (Slurm, `ibrun`, Remora, and the `$WORK`/`$SCRATCH` file systems) and a copy of this directory and of the compiled binaries under `$WORK`. Adjust the paths at the top of `shared/test_distributed_multi_deallocate_with_jobs_config_file.sh` to your environment.
+The scripts used for the paper's experiments on the Frontera supercomputer, and the instructions to run them, are in [`frontera_scripts/`](frontera_scripts/README.md).
 
 ---
 
