@@ -1,0 +1,58 @@
+The BSD 3-Clause "New" or "Modified" License
+
+Copyright (c) [2026], INESC TEC
+
+Shio is a hierarchical Software-Defined Storage control plane that enables scalable and
+holistic storage QoS for exascale HPC systems.
+
+This software is authored by:
+Mariana Miranda <mariana.m.miranda@inesctec.pt>
+
+Redistribution and use in source and binary forms, with or without modification,
+are permitted provided that the following conditions are met:
+
+1. Redistributions of source code must retain the above copyright notice, this
+list of conditions and the following disclaimer.
+
+2. Redistributions in binary form must reproduce the above copyright notice, this
+list of conditions and the following disclaimer in the documentation and/or other
+materials provided with the distribution.
+
+3. Neither the name of the copyright holder nor the names of its contributors may
+be used to endorse or promote products derived from this software without specific
+prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
+EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT
+SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED
+TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
+DAMAGE.
+
+This program is distributed with the following libraries, each under its own license
+(see the LICENSE file in its directory):
+1. PAIO (https://github.com/dsrhaslab/paio) Copyright (c) [2020-2022], INESC TEC.
+2. PADLL (https://github.com/dsrhaslab/padll) Copyright (c) [2021-2023], INESC TEC.
+
+This program makes use of the following libraries, which are downloaded at build time:
+1. gRPC (https://github.com/grpc/grpc) Copyright 2015 gRPC authors.
+2. gflags (https://github.com/gflags/gflags) Copyright (c) 2006, Google Inc.
+3. spdlog (https://github.com/gabime/spdlog) Copyright (c) 2016, Gabi Melman.
+4. yaml-cpp (https://github.com/jbeder/yaml-cpp) Copyright (c) 2008-2015 Jesse Beder.
+
+You can reach INESC TEC at info@inesctec.pt, or
+Campus da Faculdade de Engenharia da Universidade do Porto
+Rua Dr. Roberto Frias
+4200-465 Porto
+Portugal
+
+If you use "Shio" in a work that leads to a scientific publication, we would appreciate
+it if you would kindly cite it in your manuscript.
+
+Cite original paper:
+A Tale of Scale: Enabling Scalable and Holistic Storage QoS for Exascale HPC Systems.
+Middleware'26.
