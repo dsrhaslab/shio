@@ -167,15 +167,7 @@ SHIO is distributed under the BSD 3-Clause License. See [LICENSE](LICENSE) for d
 ## 📝 Citation
 
 If you use SHIO in your work, please cite our paper:
-
-```bibtex
-@inproceedings{miranda2026shio,
-  title     = {A Tale of Scale: Enabling Scalable and Holistic Storage QoS for Exascale HPC Systems},
-  author    = {Miranda, Mariana and Tanimura, Yusuke and Haga, Jason and Ruhela, Amit and Harrell, Stephen Lien and Cazes, John and Pereira, Jos{\'e} and Macedo, Ricardo and Paulo, Jo{\~a}o},
-  booktitle = {Middleware '26},
-  year      = {2026}
-}
-```
+_filling later when available_
 
 ## 🙏 Acknowledgments
 
