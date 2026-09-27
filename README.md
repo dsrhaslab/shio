@@ -89,7 +89,7 @@ docker run -it --rm -v ./results:/shio/results shio:latest /bin/bash
 Inside the container, three scripts launch a full controller hierarchy on the local machine: one global controller, two cluster controllers, three local controllers, and one job (with its data plane stages) per local controller.
 
 Jobs can use either data plane:
-- **synthetic** (default): the synthetic data plane stage, which reports randomly generated I/O metrics;
+- **synthetic** (default): the synthetic data plane stage, which does not report real I/O metrics;
 - **real**: the trace replayer, with PADLL intercepting its I/O and enforcing the control plane's rules. Each job replays the collected I/O traces of an HPC application (GROMACS, ResNet, OpenFOAM, or ShuffleNet).
 
 **Hierarchy with backup controllers and failure injection:**
