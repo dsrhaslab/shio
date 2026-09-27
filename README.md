@@ -86,7 +86,11 @@ Start an interactive container. We recommend mounting the `results` directory as
 docker run -it --rm -v ./results:/shio/results shio:latest /bin/bash
 ```
 
-Inside the container, two scripts launch a full controller hierarchy on the local machine: one global controller, two cluster controllers, three local controllers, and one job (with its data plane stages) per local controller.
+Inside the container, three scripts launch a full controller hierarchy on the local machine: one global controller, two cluster controllers, three local controllers, and one job (with its data plane stages) per local controller.
+
+Jobs can use either data plane:
+- **synthetic** (default): the synthetic data plane stage, which reports randomly generated I/O metrics (*Configuration B* in the paper);
+- **real**: the trace replayer, with PADLL intercepting its I/O and enforcing the control plane's rules. Each job replays the collected I/O traces of an HPC application (GROMACS, ResNet, OpenFOAM, or ShuffleNet) (*Configuration A*).
 
 **Hierarchy with backup controllers and failure injection:**
 
@@ -95,11 +99,13 @@ cd /shio
 ./local_scripts/launch_hierarchy.sh
 ```
 
-The global and cluster controllers run as primary-backup pairs. After the hierarchy has run for `RUN_WAIT` seconds, the script:
+The global and cluster controllers run as primary-backup pairs. Each backup sends heartbeats to its primary every second and, when the primary fails, takes over its network addresses. After the hierarchy has run for `RUN_WAIT` seconds, the script:
 1. kills each primary controller in sequence (global, then each cluster controller), so that its backup takes over;
 2. terminates some jobs (`EARLY_JOBS`);
 3. ends the remaining jobs one at a time;
 4. stops all controllers.
+
+<p align="center"> <img src=".docs/backup-setup.svg" alt="Local hierarchy with backup controllers and failure scenario" width="900"/> </p>
 
 **Hierarchy without backup controllers:**
 
@@ -110,13 +116,28 @@ cd /shio
 
 Each global and cluster controller runs alone, and the hierarchy keeps running until `Ctrl-C`.
 
-Both scripts accept the following environment variables:
+**Hierarchy with the real data plane:**
+
+```bash
+cd /shio
+./local_scripts/launch_hierarchy_real_dp.sh
+```
+
+Each global and cluster controller runs alone, and each job replays the trace of an application (by default, GROMACS, ResNet, and OpenFOAM) for `JOB_DURATION` seconds. When all jobs finish, the controllers are stopped. The real data plane can also be used with the other two scripts by setting `DATA_PLANE=real` (*e.g.,* `DATA_PLANE=real ./local_scripts/launch_hierarchy.sh`).
+
+> ⚠️ PADLL intercepts I/O through `LD_PRELOAD` and requires Linux, so run the real data plane inside the container. The trace replayer issues real I/O to `/tmp/replay_files`, which grows with the duration of the run.
+
+The scripts accept the following environment variables:
 
 | Variable | Description | Default |
 |---|---|---|
+| `DATA_PLANE` | data plane used by the jobs: `synthetic` or `real` | `synthetic` (`real` for `launch_hierarchy_real_dp.sh`) |
 | `STAGES_PER_JOB` | data plane stages launched per job | `1` |
-| `DATA_PLANE_BIN` | data plane stage binary | `data_plane/synthetic_dp/build/data_plane_stage` |
-| `JOB_CMD` | custom command that starts a job, instead of `DATA_PLANE_BIN` | — |
+| `DATA_PLANE_BIN` | synthetic data plane stage binary | `data_plane/synthetic_dp/build/data_plane_stage` |
+| `JOB_APPS` | application replayed by each job (real data plane): `gromacs`, `resnet`, `openfoam`, or `shufflenet` | `gromacs resnet openfoam` |
+| `JOB_DURATION` | seconds each job replays its trace (real data plane) | `60` |
+| `PADLL_LIB`, `PAIO_LIB_DIR`, `TRACE_REPLAYER`, `TRACES_DIR` | real data plane binaries and traces | paths built by the Docker image |
+| `JOB_CMD` | custom command that starts a job, instead of a data plane | — |
 | `RESULTS_DIR` | base directory for the results | `results` |
 | `STARTUP_WAIT` | seconds between launch steps | `2` |
 | `RUN_WAIT` | seconds before the first failure (`launch_hierarchy.sh` only) | `20` |
@@ -127,6 +148,12 @@ For example, for a shorter failure scenario with 5 stages per job:
 
 ```bash
 RUN_WAIT=10 STEP_WAIT=5 STAGES_PER_JOB=5 ./local_scripts/launch_hierarchy.sh
+```
+
+Or, for 2 minutes of ShuffleNet and GROMACS traces through PADLL:
+
+```bash
+JOB_APPS="shufflenet gromacs" JOB_DURATION=120 ./local_scripts/launch_hierarchy_real_dp.sh
 ```
 
 📈 **Output:**
@@ -178,6 +205,7 @@ shio/
 │       ├── paio_padll_dp/   # PAIO and PADLL (Configuration A)
 │       └── trace_replayer/  # trace replayer and collected I/O traces
 ├── local_scripts/           # launch a controller hierarchy on a single machine
+├── .docs/                   # figures used in this README
 ├── frontera_scripts/        # experiment scripts for the Frontera supercomputer
 └── Dockerfile
 ```
