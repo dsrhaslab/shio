@@ -26,7 +26,7 @@
 # Environment variables:
 #   BUILD_DIR       directory containing shio_exec (default: <control_plane>/build)
 #   DATA_PLANE_BIN  data plane stage binary
-#                   (default: <repo>/data_plane/synthetic_data_plane/build/data_plane_stage)
+#                   (default: <repo>/data_plane/synthetic_dp/build/data_plane_stage)
 #   STAGES_PER_JOB  number of data plane stages launched per job (default: 1). Stages of the
 #                   same job are told apart by their stage_env (1..STAGES_PER_JOB).
 #   STAGE_USER      user reported by the data plane stages (default: $USER, or "shio")
@@ -45,7 +45,7 @@ REPO_DIR="$(dirname "$SCRIPT_DIR")"
 CONTROL_PLANE_DIR="$REPO_DIR/control_plane"
 
 BUILD_DIR="${BUILD_DIR:-$CONTROL_PLANE_DIR/build}"
-DATA_PLANE_BIN="${DATA_PLANE_BIN:-$REPO_DIR/data_plane/synthetic_data_plane/build/data_plane_stage}"
+DATA_PLANE_BIN="${DATA_PLANE_BIN:-$REPO_DIR/data_plane/synthetic_dp/build/data_plane_stage}"
 STAGES_PER_JOB="${STAGES_PER_JOB:-1}"
 STAGE_USER="${STAGE_USER:-${USER:-shio}}"
 JOB_CMD="${JOB_CMD:-}"
@@ -220,7 +220,7 @@ elif [[ -x "$DATA_PLANE_BIN" ]]; then
     done
 else
     log "Data plane stage binary not found: $DATA_PLANE_BIN; skipping job launch."
-    log "Build it (cd data_plane/synthetic_data_plane && mkdir -p build && cd build && cmake .. && cmake --build .) or set DATA_PLANE_BIN."
+    log "Build it (cd data_plane/synthetic_dp && mkdir -p build && cd build && cmake .. && cmake --build .) or set DATA_PLANE_BIN."
 fi
 
 log "Hierarchy running. Press Ctrl-C to stop."
