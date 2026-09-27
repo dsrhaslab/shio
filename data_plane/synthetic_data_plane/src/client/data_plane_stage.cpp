@@ -1,45 +1,67 @@
-//
-//
+/**
+ *   Copyright (c) 2026 INESC TEC.
+ **/
 
-// Server side C/C++ program to demonstrate Socket programming
+/**
+ * Synthetic data plane stage.
+ * Emulates a PAIO-like data plane stage that registers itself with the control plane and answers
+ * its control operations (housekeeping rules, enforcement rules, statistics collection) without
+ * performing any real I/O. It is meant to evaluate the control plane at scale.
+ *
+ * Protocol overview:
+ *  1. connect to the control plane's handshake socket and exchange the stage identification
+ *  (StageSimplifiedHandshakeRaw) for the address of a dedicated socket (StageHandshakeRaw);
+ *  2. reconnect to that dedicated socket;
+ *  3. loop reading ControlOperation headers and dispatching them to the respective handler, until
+ *  rounds_scalability enforcement rules have been received.
+ */
+
 #include "utils/interface_definitions.hpp"
 
-#include <iostream>
+#include <inttypes.h>
 #include <netinet/in.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <string>
 #include <sys/socket.h>
 #include <sys/un.h>
 #include <unistd.h>
-// #include "../../include/utils/interface_definitions.hpp"
-#include "string.h"
 
 #include <algorithm>
-#include <fstream> // std::ifstream
-#include <inttypes.h>
-#include <iostream> // std::cout
-#include <iostream>
+#include <string>
+
+/**
+ * Number of enforcement rules the stage expects to receive per registered channel before it
+ * terminates.
+ */
 #define SCALABILITY_ROUNDS 10000
 
-// const char* option_socket_name_tf_1_ = "/tmp/paiotensorflow01.socket";
-// const char* option_socket_name_tf_1_client = "/tmp/paiotensorflow01_client.socket";
+/**
+ * Number of connection attempts to the control plane's handshake socket (1 second apart).
+ */
+#define CONNECTION_ATTEMPTS 3
 
-void collect_stats (int sockfd);
-void collect_global_stats (int sockfd);
-void collect_entity_stats (int sockfd);
-void create_enforcement_rule (int sockfd);
-void housekeeping_rule_channel (int sockfd);
-void housekeeping_rule_object (int sockfd);
-void mark_stage_ready (int sockfd);
+/**
+ * Operation subtype used by the control plane to request per-operation statistics
+ * (see collect_global_all_stats). It has no counterpart in interface_definitions.hpp.
+ */
+#define COLLECT_GLOBAL_ALL_STATS 8
 
+// Set to 1 once the control plane has collected statistics at least once.
 int collect_ok = 0;
 
+// Number of channels created through housekeeping rules.
 int n_channels = 0;
 
+// Remaining enforcement rules to be received before the stage terminates.
 int rounds_scalability = SCALABILITY_ROUNDS;
 
+/**
+ * housekeeping_rule_channel: reads a HousekeepingCreateChannelRaw rule from the control plane and
+ * acknowledges it. Each new channel increases the number of enforcement rules the stage waits for
+ * (SCALABILITY_ROUNDS per channel).
+ * @param sockfd Socket connected to the control plane.
+ */
 void housekeeping_rule_channel (int sockfd)
 {
     HousekeepingCreateChannelRaw object = {};
@@ -51,7 +73,6 @@ void housekeeping_rule_channel (int sockfd)
         object.m_operation_context);*/
 
     n_channels++;
-
     rounds_scalability = SCALABILITY_ROUNDS * n_channels;
 
     ACK ack = {};
@@ -60,6 +81,11 @@ void housekeeping_rule_channel (int sockfd)
     n = ::write (sockfd, &ack, sizeof (struct ACK));
 }
 
+/**
+ * housekeeping_rule_object: reads a HousekeepingCreateObjectRaw rule from the control plane, logs
+ * it, and acknowledges it.
+ * @param sockfd Socket connected to the control plane.
+ */
 void housekeeping_rule_object (int sockfd)
 {
     HousekeepingCreateObjectRaw object = {};
@@ -79,6 +105,10 @@ void housekeeping_rule_object (int sockfd)
     n = ::write (sockfd, &ack, sizeof (struct ACK));
 }
 
+/**
+ * mark_stage_ready: reads a StageReadyRaw message from the control plane and acknowledges it.
+ * @param sockfd Socket connected to the control plane.
+ */
 void mark_stage_ready (int sockfd)
 {
     StageReadyRaw object = {};
@@ -93,6 +123,11 @@ void mark_stage_ready (int sockfd)
     n = ::write (sockfd, &ack, sizeof (struct ACK));
 }
 
+/**
+ * create_enforcement_rule: reads an EnforcementRuleRaw from the control plane and acknowledges it.
+ * The rule is not applied, since the stage does not serve any I/O.
+ * @param sockfd Socket connected to the control plane.
+ */
 void create_enforcement_rule (int sockfd)
 {
     EnforcementRuleRaw object = {};
@@ -110,10 +145,13 @@ void create_enforcement_rule (int sockfd)
     n = ::write (sockfd, &ack, sizeof (struct ACK));
 }
 
+/**
+ * collect_global_stats: replies to a data/metadata statistics request with fixed, synthetic rates
+ * (150 MB/s of data and 10 MB/s of metadata).
+ * @param sockfd Socket connected to the control plane.
+ */
 void collect_global_stats (int sockfd)
 {
-    // printf ("DataPlaneStage  collect_global_stats\n");
-
     StatsDataMetadataRaw object = {};
 
     object.m_total_data_rate = 150000000;
@@ -122,115 +160,30 @@ void collect_global_stats (int sockfd)
     int n = ::write (sockfd, &object, sizeof (struct StatsDataMetadataRaw));
 }
 
-char* operation_list[] = { "op1",
-    "op2",
-    "op3",
-    "op4",
-    "op5",
-    "op6",
-    "op7",
-    "op8",
-    "op9",
-    "op10",
-    "op11",
-    "op12",
-    "op13",
-    "op14",
-    "op15",
-    "op16",
-    "op17",
-    "op18",
-    "op19",
-    "op20",
-    "op21",
-    "op22",
-    "op23",
-    "op24",
-    "op25",
-    "op26",
-    "op27",
-    "op28",
-    "op29",
-    "op30",
-    "op31",
-    "op32",
-    "op33",
-    "op34",
-    "op35",
-    "op36",
-    "op37",
-    "op38",
-    "op39",
-    "op40",
-    "op41",
-    "op42",
-    "op43",
-    "op44",
-    "op45",
-    "op46",
-    "op47",
-    "op48",
-    "op49",
-    "op50",
-    "op51",
-    "op52",
-    "op53",
-    "op54",
-    "op55",
-    "op56",
-    "op57",
-    "op58",
-    "op59",
-    "op60",
-    "op61",
-    "op62",
-    "op63",
-    "op64",
-    "op65",
-    "op66",
-    "op67",
-    "op68",
-    "op69",
-    "op70",
-    "op71",
-    "op72",
-    "op73",
-    "op74",
-    "op75",
-    "op76",
-    "op77",
-    "op78",
-    "op79",
-    "op80",
-    "op81",
-    "op82",
-    "op83",
-    "op84",
-    "op85",
-    "op86",
-    "op87",
-    "op88",
-    "op89",
-    "op90",
-    "op91",
-    "op92",
-    "op93",
-    "op94",
-    "op95",
-    "op96",
-    "op97",
-    "op98",
-    "op99",
-    "op100" };
+/**
+ * Synthetic operation names reported by collect_global_all_stats. Only the first op_number entries
+ * are used.
+ */
+const char* operation_list[] = { "op1", "op2", "op3", "op4", "op5", "op6", "op7", "op8", "op9",
+    "op10", "op11", "op12", "op13", "op14", "op15", "op16", "op17", "op18", "op19", "op20", "op21",
+    "op22", "op23", "op24", "op25", "op26", "op27", "op28", "op29", "op30", "op31", "op32", "op33",
+    "op34", "op35", "op36", "op37", "op38", "op39", "op40", "op41", "op42", "op43", "op44", "op45",
+    "op46", "op47", "op48", "op49", "op50", "op51", "op52", "op53", "op54", "op55", "op56", "op57",
+    "op58", "op59", "op60", "op61", "op62", "op63", "op64", "op65", "op66", "op67", "op68", "op69",
+    "op70", "op71", "op72", "op73", "op74", "op75", "op76", "op77", "op78", "op79", "op80", "op81",
+    "op82", "op83", "op84", "op85", "op86", "op87", "op88", "op89", "op90", "op91", "op92", "op93",
+    "op94", "op95", "op96", "op97", "op98", "op99", "op100" };
 
+/**
+ * collect_global_all_stats: replies to a per-operation statistics request with op_number synthetic
+ * entries, where operation i is named operation_list[i] and has a rate of i + 100.
+ * @param sockfd Socket connected to the control plane.
+ */
 void collect_global_all_stats (int sockfd)
 {
-    //printf ("DataPlaneStage  collect_global_stats: %d\n", op_number);
-
     StatsDataGlobal object = {};
 
     for (int i = 0; i < op_number; i++) {
-        //printf ("%s, %d\n", operation_list[i], i + 100);
         strcpy (object.op_name[i], operation_list[i]);
         object.op_rate[i] = i + 100;
     }
@@ -238,8 +191,16 @@ void collect_global_all_stats (int sockfd)
     int n = ::write (sockfd, &object, sizeof (struct StatsDataGlobal));
 }
 
-const int m_nr_entities = 2;
-
+/**
+ * DeployDataPlaneStage: registers the stage with the control plane and serves its control
+ * operations until rounds_scalability enforcement rules have been received.
+ * @param stage_name Stage name; ':' and '.' characters are stripped before it is sent.
+ * @param stage_env Value of the stage's environment variable.
+ * @param stage_user User that submitted the application.
+ * @param m_pid Pid reported to the control plane.
+ * @param m_ppid Parent pid reported to the control plane.
+ * @param socket_name Path of the control plane's UNIX handshake socket.
+ */
 void DeployDataPlaneStage (char* stage_name,
     char* stage_env,
     char* stage_user,
@@ -250,13 +211,12 @@ void DeployDataPlaneStage (char* stage_name,
     int sockfd, n;
     struct sockaddr_un serv_addr;
 
-    char buffer[256];
-
     sockfd = socket (AF_UNIX, SOCK_STREAM, 0);
     if (sockfd < 0) {
         printf ("DeployDataPlaneStage: Error in Opening Socket 1!\n");
     }
 
+    // Build the stage identification sent during the handshake.
     StageSimplifiedHandshakeRaw object = {};
 
     std::string s_stage_name = stage_name;
@@ -272,55 +232,41 @@ void DeployDataPlaneStage (char* stage_name,
     object.m_pid = m_pid;
     object.m_ppid = m_ppid;
 
-    const char* option_socket_name = socket_name;
-
+    // Connect to the control plane's handshake socket.
     bzero ((char*)&serv_addr, sizeof (serv_addr));
     serv_addr.sun_family = AF_UNIX;
-    strncpy (serv_addr.sun_path, option_socket_name, sizeof (serv_addr.sun_path) - 1);
+    strncpy (serv_addr.sun_path, socket_name, sizeof (serv_addr.sun_path) - 1);
 
-    if (connect (sockfd, (struct sockaddr*)&serv_addr, sizeof (serv_addr)) < 0) {
+    for (int attempt = 1;
+         connect (sockfd, (struct sockaddr*)&serv_addr, sizeof (serv_addr)) < 0;
+         attempt++) {
         printf ("DeployDataPlaneStage: Error in Connection:%s \n", socket_name);
-        sleep(1);
-        if (connect (sockfd, (struct sockaddr*)&serv_addr, sizeof (serv_addr)) < 0) {
-            printf ("DeployDataPlaneStage: Error in Connection:%s \n", socket_name);
-            sleep(1);
-            if (connect (sockfd, (struct sockaddr*)&serv_addr, sizeof (serv_addr)) < 0) {
-                printf ("DeployDataPlaneStage: Error in Connection:%s \n", socket_name);
-                return;
-            }
+        if (attempt == CONNECTION_ATTEMPTS) {
+            return;
         }
+        sleep (1);
     }
 
-    bzero (buffer, 256);
-
+    // Handshake: receive the handshake operation, send the stage identification, and receive the
+    // address of the dedicated socket for this stage.
     ControlOperation operation = {};
-
     n = ::read (sockfd, &operation, sizeof (struct ControlOperation));
 
-    // printf(
-    //     "DeployDataPlaneStage: Here is message 1: %d\n",operation.m_operation_type);
-
     n = ::write (sockfd, &object, sizeof (struct StageSimplifiedHandshakeRaw));
-
     if (n < 0) {
         printf ("DeployDataPlaneStage: Error writing to Socket!\n");
     }
 
     StageHandshakeRaw handshake_object = {};
-
     n = ::read (sockfd, &handshake_object, sizeof (struct StageHandshakeRaw));
 
-    // printf(
-    //     "DeployDataPlaneStage: Here is message 2: %s\n", handshake_object.m_address);
-
-    const char* option_socket_name2 = handshake_object.m_address;
-
+    // Reconnect to the dedicated socket.
     close (sockfd);
     sockfd = socket (AF_UNIX, SOCK_STREAM, 0);
 
     bzero ((char*)&serv_addr, sizeof (serv_addr));
     serv_addr.sun_family = AF_UNIX;
-    strncpy (serv_addr.sun_path, option_socket_name2, sizeof (serv_addr.sun_path) - 1);
+    strncpy (serv_addr.sun_path, handshake_object.m_address, sizeof (serv_addr.sun_path) - 1);
 
     if (connect (sockfd, (struct sockaddr*)&serv_addr, sizeof (serv_addr)) < 0) {
         printf ("DeployDataPlaneStage: Error in Connection 2!\n");
@@ -328,43 +274,58 @@ void DeployDataPlaneStage (char* stage_name,
         printf ("DeployDataPlaneStage: Connection Successfulxx!\n");
     }
 
+    // Serve control operations; each enforcement rule consumes one round.
     while (rounds_scalability > 0) {
-
         ControlOperation operation1 = {};
 
         n = ::read (sockfd, &operation1, sizeof (struct ControlOperation));
 
-        if (operation1.m_operation_type == 4) {
-            if (operation1.m_operation_subtype == 1) {
-                housekeeping_rule_channel (sockfd);
-            } else if (operation1.m_operation_subtype == 2) {
-                housekeeping_rule_object (sockfd);
-            }
-            //   printf("DeployDataPlaneStage: Housekeeping Rules Successful!\n");
-        }
+        switch (operation1.m_operation_type) {
+            case CREATE_HSK_RULE:
+                if (operation1.m_operation_subtype == HSK_CREATE_CHANNEL) {
+                    housekeeping_rule_channel (sockfd);
+                } else if (operation1.m_operation_subtype == HSK_CREATE_OBJECT) {
+                    housekeeping_rule_object (sockfd);
+                }
+                break;
 
-        else if (operation1.m_operation_type == 1) {
-            mark_stage_ready (sockfd);
-            //   printf("DeployDataPlaneStage: Mark stage ready!\n");
-        } else if (operation1.m_operation_type == 3) {
-            // printf("DeployDataPlaneStage: Collected Statistics!\n");
-            if (operation1.m_operation_subtype == 6) {
-                collect_global_stats (sockfd);
-                collect_ok = 1;
-            } else if (operation1.m_operation_subtype == 8) {
-                collect_global_all_stats (sockfd);
-                collect_ok = 1;
-            }
-        } else if (operation1.m_operation_type == 6) {
-            // printf("DeployDataPlaneStage: Create Enforcement Rule!\n");
-            rounds_scalability--;
-            create_enforcement_rule (sockfd);
+            case STAGE_READY:
+                mark_stage_ready (sockfd);
+                break;
+
+            case COLLECT_DETAILED_STATS:
+                if (operation1.m_operation_subtype == COLLECT_DATA_METADATA_STATS) {
+                    collect_global_stats (sockfd);
+                    collect_ok = 1;
+                } else if (operation1.m_operation_subtype == COLLECT_GLOBAL_ALL_STATS) {
+                    collect_global_all_stats (sockfd);
+                    collect_ok = 1;
+                }
+                break;
+
+            case CREATE_ENF_RULE:
+                rounds_scalability--;
+                create_enforcement_rule (sockfd);
+                break;
         }
     }
+
     printf ("Destroy data plane stage!\n");
 }
 
+/**
+ * Usage: data_plane_stage <stage_name> <stage_env> <stage_user> <socket_name>
+ * The handshake socket used is /tmp/<socket_name>.socket. The stage_env argument is also parsed as
+ * an integer and reported as the stage's pid; the ppid is fixed to 101.
+ */
 int main (int argc, char* argv[])
 {
-    DeployDataPlaneStage (argv[1], argv[2], argv[3], std::stoi (argv[2]), 101, argv[4]);
+    std::string socket_path = "/tmp/" + std::string (argv[4]) + ".socket";
+
+    DeployDataPlaneStage (argv[1],
+        argv[2],
+        argv[3],
+        std::stoi (argv[2]),
+        101,
+        const_cast<char*> (socket_path.c_str ()));
 }

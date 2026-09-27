@@ -13,16 +13,23 @@ RUN apt-get update \
         pkg-config \
     && rm -rf /var/lib/apt/lists/*
 
-COPY . .
+WORKDIR /shio
 
-WORKDIR /control_plane
+# Control plane. Copied and built on its own so that data plane changes do not invalidate the
+# (slow) gRPC build layer.
+COPY control_plane ./control_plane
 
 # Configure and compile. Headers include "_deps/grpc-src/...", which resolves relative to this
 # build directory.
-RUN mkdir -p build \
-    && cd build \
+RUN mkdir -p control_plane/build \
+    && cd control_plane/build \
     && cmake .. \
-    && cmake --build . 
+    && cmake --build .
 
-WORKDIR /shio/build
+# Data plane.
+COPY data_plane ./data_plane
 
+RUN mkdir -p data_plane/synthetic_data_plane/build \
+    && cd data_plane/synthetic_data_plane/build \
+    && cmake .. \
+    && cmake --build .
