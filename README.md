@@ -17,8 +17,8 @@ In the paper, SHIO coordinates up to 100,000 data plane stages on 2,000 compute 
 
 This artifact is organized with the following contributions:
 - SHIO's control plane (global, cluster, and local controllers, with primary-backup fault tolerance);
-- A synthetic data plane stage, used for stress-testing the control plane at scale (*Configuration B* in the paper);
-- A realistic data plane built on [PAIO](https://github.com/dsrhaslab/paio) and [PADLL](https://github.com/dsrhaslab/padll), plus a trace replayer and the I/O traces of GROMACS, OpenFOAM, ResNet-50, and ShuffleNet (*Configuration A*);
+- A synthetic data plane stage, used for stress-testing the control plane at scale;
+- A realistic data plane built on [PAIO](https://github.com/dsrhaslab/paio) and [PADLL](https://github.com/dsrhaslab/padll), plus a trace replayer and the I/O traces of GROMACS, OpenFOAM, ResNet, and ShuffleNet;
 - Scripts to run SHIO locally and to reproduce the experiments on the Frontera supercomputer.
 
 ```
@@ -49,7 +49,7 @@ To emulate systems of 10,000 to 100,000 nodes, each physical compute node hosts 
 
 ---
 
-## Steps to download, install, and test SHIO
+## Steps to download, install, and test SHIO locally
 
 #### Clone the SHIO repository
 
@@ -89,8 +89,8 @@ docker run -it --rm -v ./results:/shio/results shio:latest /bin/bash
 Inside the container, three scripts launch a full controller hierarchy on the local machine: one global controller, two cluster controllers, three local controllers, and one job (with its data plane stages) per local controller.
 
 Jobs can use either data plane:
-- **synthetic** (default): the synthetic data plane stage, which reports randomly generated I/O metrics (*Configuration B* in the paper);
-- **real**: the trace replayer, with PADLL intercepting its I/O and enforcing the control plane's rules. Each job replays the collected I/O traces of an HPC application (GROMACS, ResNet, OpenFOAM, or ShuffleNet) (*Configuration A*).
+- **synthetic** (default): the synthetic data plane stage, which reports randomly generated I/O metrics;
+- **real**: the trace replayer, with PADLL intercepting its I/O and enforcing the control plane's rules. Each job replays the collected I/O traces of an HPC application (GROMACS, ResNet, OpenFOAM, or ShuffleNet).
 
 **Hierarchy with backup controllers and failure injection:**
 
