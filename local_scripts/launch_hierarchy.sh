@@ -18,7 +18,7 @@
 #   ./shio_exec --config_file ../files/hierarchy/<controller>_config_file
 #
 # and each job's data plane stages as:
-#   data_plane_stage <job_name> <stage_env> <stage_user> <local_controller_address>
+#   data_plane_stage <job_name> <stage_env> <stage_user> /tmp/<local_controller_address>.socket
 #
 # Usage:
 #   ./scripts/launch_hierarchy.sh
@@ -215,7 +215,7 @@ elif [[ -x "$DATA_PLANE_BIN" ]]; then
         id="${LOCAL_IDS[$i]}"
         for env in $(seq 1 "$STAGES_PER_JOB"); do
             launch "job${id}_stage${env}" "$DATA_PLANE_BIN" \
-                "${LOCAL_JOB_NAMES[$i]}" "$env" "$STAGE_USER" "$HOST:${LOCAL_PORTS[$i]}"
+                "${LOCAL_JOB_NAMES[$i]}" "$env" "$STAGE_USER" "/tmp/$HOST:${LOCAL_PORTS[$i]}.socket"
         done
     done
 else

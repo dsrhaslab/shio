@@ -314,18 +314,11 @@ void DeployDataPlaneStage (char* stage_name,
 }
 
 /**
- * Usage: data_plane_stage <stage_name> <stage_env> <stage_user> <socket_name>
- * The handshake socket used is /tmp/<socket_name>.socket. The stage_env argument is also parsed as
- * an integer and reported as the stage's pid; the ppid is fixed to 101.
+ * Usage: data_plane_stage <stage_name> <stage_env> <stage_user> <socket_path>
+ * The socket_path is the full path of the control plane's UNIX handshake socket. The stage_env
+ * argument is also parsed as an integer and reported as the stage's pid; the ppid is fixed to 101.
  */
 int main (int argc, char* argv[])
 {
-    std::string socket_path = "/tmp/" + std::string (argv[4]) + ".socket";
-
-    DeployDataPlaneStage (argv[1],
-        argv[2],
-        argv[3],
-        std::stoi (argv[2]),
-        101,
-        const_cast<char*> (socket_path.c_str ()));
+    DeployDataPlaneStage (argv[1], argv[2], argv[3], std::stoi (argv[2]), 101, argv[4]);
 }
