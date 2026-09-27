@@ -6,6 +6,7 @@
 #define CHEFERD_OPTIONS_HPP
 
 #include <string>
+#include <cstdint>
 
 namespace cheferd {
 
