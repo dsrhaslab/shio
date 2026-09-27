@@ -1,0 +1,10 @@
+README.md
+Dockerfile
+.dockerignore
+build
+build-*
+/build
+**/build
+**/.git
+cmake-build-debug
+
