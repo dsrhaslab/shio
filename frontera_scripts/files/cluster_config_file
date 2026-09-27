@@ -1,0 +1,2 @@
+controller: cluster
+policies_rules_file: ../files/policy_4_rules_file_200
