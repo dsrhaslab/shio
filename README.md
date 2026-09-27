@@ -1,6 +1,6 @@
 # SHIO: Scalable and Holistic HPC I/O Management
 
-This repository contains the artifact of the paper **"A Tale of Scale: Enabling Scalable and Holistic Storage QoS for Exascale HPC Systems"** (Middleware '26).
+This repository contains the artifact of the paper **"A Tale of Scale: Enabling Scalable and Holistic Storage QoS for Exascale HPC Systems"** (Middleware '26) (#282). 
 
 ## 📖 Introduction to SHIO
 
