@@ -150,9 +150,9 @@ shio/
 │   ├── protos/              #   gRPC interface between controllers
 │   └── files/               #   example controller, policy, and job configuration files
 ├── data_plane/
-│   ├── synthetic_dp/        # synthetic data plane stage (Configuration B)
+│   ├── synthetic_dp/        # synthetic data plane stage
 │   └── realistic_dp/
-│       ├── paio_padll_dp/   # PAIO and PADLL (Configuration A)
+│       ├── paio_padll_dp/   # PAIO and PADLL
 │       └── trace_replayer/  # trace replayer and collected I/O traces
 ├── local_scripts/           # launch a controller hierarchy on a single machine
 ├── .docs/                   # figures used in this README
