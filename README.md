@@ -127,34 +127,7 @@ Each global and cluster controller runs alone, and each job replays the trace of
 
 > ⚠️ PADLL intercepts I/O through `LD_PRELOAD` and requires Linux, so run the real data plane inside the container. The trace replayer issues real I/O to `/tmp/replay_files`, which grows with the duration of the run.
 
-The scripts accept the following environment variables:
-
-| Variable | Description | Default |
-|---|---|---|
-| `DATA_PLANE` | data plane used by the jobs: `synthetic` or `real` | `synthetic` (`real` for `launch_hierarchy_real_dp.sh`) |
-| `STAGES_PER_JOB` | data plane stages launched per job | `1` |
-| `DATA_PLANE_BIN` | synthetic data plane stage binary | `data_plane/synthetic_dp/build/data_plane_stage` |
-| `JOB_APPS` | application replayed by each job (real data plane): `gromacs`, `resnet`, `openfoam`, or `shufflenet` | `gromacs resnet openfoam` |
-| `JOB_DURATION` | seconds each job replays its trace (real data plane) | `60` |
-| `PADLL_LIB`, `PAIO_LIB_DIR`, `TRACE_REPLAYER`, `TRACES_DIR` | real data plane binaries and traces | paths built by the Docker image |
-| `JOB_CMD` | custom command that starts a job, instead of a data plane | — |
-| `RESULTS_DIR` | base directory for the results | `results` |
-| `STARTUP_WAIT` | seconds between launch steps | `2` |
-| `RUN_WAIT` | seconds before the first failure (`launch_hierarchy.sh` only) | `20` |
-| `STEP_WAIT` | seconds between failure/termination steps (`launch_hierarchy.sh` only) | `10` |
-| `EARLY_JOBS` | jobs terminated early (`launch_hierarchy.sh` only) | `2` |
-
-For example, for a shorter failure scenario with 5 stages per job:
-
-```bash
-RUN_WAIT=10 STEP_WAIT=5 STAGES_PER_JOB=5 ./local_scripts/launch_hierarchy.sh
-```
-
-Or, for 2 minutes of ShuffleNet and GROMACS traces through PADLL:
-
-```bash
-JOB_APPS="shufflenet gromacs" JOB_DURATION=120 ./local_scripts/launch_hierarchy_real_dp.sh
-```
+The scripts accept environment variables to change, for example, the number of stages per job, the applications replayed, or the timing of the failure scenario. See [`local_scripts/`](local_scripts/README.md) for the full list and examples.
 
 📈 **Output:**
 
