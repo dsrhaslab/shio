@@ -1,8 +1,13 @@
 #!/bin/bash
 
+#folder with the shared scripts (this script's folder)
+SHARED_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
+
 #jobs_config_file
 #exemplo: 10000_G0_C10000
 JOBS_CONFIG_PATH=$2
+#controller setup: dependability_testing (default) or normal_testing
+CONTROLLER_MODE=${3:-dependability_testing}
 
 EXP=${JOBS_CONFIG_PATH}_deallocated_with_50_per_node_run$1
 #total_cluster_physical_nodes
@@ -32,7 +37,7 @@ DATA_PLANE_EXEC_PATH=${OPS}_${ROUNDS}
 TEST_PATH=op${OPS}_c${CLUSTER_NODES}_l${LOCAL_NODES}_t${TOTAL_STAGES}
 TEST_VERSION=${TEST_PATH}_exp${EXP}
 
-./test_distributed_multi_deallocate_with_jobs_config_file.sh ${EXP} "concat_benchmark" ${CLUSTER_NODES} ${LOCAL_NODES} ${BOOTSTRAP_NODES} ${PER_CLUSTER_NODES} ${PER_NODE_JOBS} ${EXEC_PATH} ${DATA_PLANE_EXEC_PATH} ${TEST_PATH} ${TEST_VERSION} ${JOBS_CONFIG_PATH} &
+${SHARED_DIR}/test_distributed_multi_deallocate_with_jobs_config_file.sh ${EXP} "concat_benchmark" ${CLUSTER_NODES} ${LOCAL_NODES} ${BOOTSTRAP_NODES} ${PER_CLUSTER_NODES} ${PER_NODE_JOBS} ${EXEC_PATH} ${DATA_PLANE_EXEC_PATH} ${TEST_PATH} ${TEST_VERSION} ${JOBS_CONFIG_PATH} ${CONTROLLER_MODE} &
 
 sleep 10
 
@@ -44,9 +49,9 @@ module load remora
 export REMORA_TMPDIR=/tmp
 export REMORA_PERIOD=1
 
-ibrun -n 1 -o ${BOOTSTRAP_NODES} wait_process_exists.sh
+ibrun -n 1 -o ${BOOTSTRAP_NODES} ${SHARED_DIR}/wait_process_exists.sh
 
-remora ibrun -n 1 -o ${BOOTSTRAP_NODES} check_process_exists.sh
+remora ibrun -n 1 -o ${BOOTSTRAP_NODES} ${SHARED_DIR}/check_process_exists.sh
 
 sleep 10
 

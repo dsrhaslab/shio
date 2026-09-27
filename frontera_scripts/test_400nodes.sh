@@ -6,5 +6,5 @@
 #SBATCH -n 16             # Total # of mpi tasks (should be 1 for serial)
 #SBATCH -t 01:00:00               # Run time (hh:mm:ss)
 
-./call_multiple_op2_400_try_50_per_node_all.sh test_name "10000nodes_50_100_50_100_50"
+./shared/call_multiple_op2_400_try_50_per_node_all.sh test_name "10000nodes_50_100_50_100_50"
 sleep 60
