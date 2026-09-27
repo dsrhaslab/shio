@@ -8,3 +8,4 @@ build-*
 **/.git
 cmake-build-debug
 
+results

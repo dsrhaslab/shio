@@ -69,3 +69,6 @@ test/test_runner
 
 
 **/.vscode
+
+## Results of local runs (local_scripts/launch_hierarchy.sh)
+results/
