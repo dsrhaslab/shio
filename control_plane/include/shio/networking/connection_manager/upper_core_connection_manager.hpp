@@ -1,14 +1,14 @@
 /**
- *   Copyright (c) 2025 INESC TEC.
+ *   Copyright (c) 2026 INESC TEC.
  **/
 
-#ifndef CHEFERD_UPPER_CORE_CONNECTION_MANAGER_HPP
-#define CHEFERD_UPPER_CORE_CONNECTION_MANAGER_HPP
+#ifndef SHIO_UPPER_CORE_CONNECTION_MANAGER_HPP
+#define SHIO_UPPER_CORE_CONNECTION_MANAGER_HPP
 
-#include "cheferd/controller/cluster_controller.hpp"
-#include "cheferd/controller/control_application/control_application.hpp"
-#include "cheferd/controller/control_application/passthrough_control_application.hpp"
-#include "cheferd/session/local_controller_session.hpp"
+#include "shio/controller/cluster_controller.hpp"
+#include "shio/controller/control_application/control_application.hpp"
+#include "shio/controller/control_application/passthrough_control_application.hpp"
+#include "shio/session/local_controller_session.hpp"
 
 #include <regex>
 #include <thread>
@@ -35,7 +35,7 @@ using controllers_grpc_interface::SimplifiedHandshakeRaw;
 using grpc::Channel;
 using grpc::ClientContext;
 
-namespace cheferd {
+namespace shio {
 
 class ClusterController;
 
@@ -83,6 +83,6 @@ public:
     void stop_server ();
 };
 
-} // namespace cheferd
+} // namespace shio
 
-#endif // CHEFERD_UPPER_CORE_CONNECTION_MANAGER_HPP
+#endif // SHIO_UPPER_CORE_CONNECTION_MANAGER_HPP

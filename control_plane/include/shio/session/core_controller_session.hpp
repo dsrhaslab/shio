@@ -1,18 +1,18 @@
 /**
- *   Copyright (c) 2025 INESC TEC.
+ *   Copyright (c) 2026 INESC TEC.
  **/
 
-#ifndef CHEFERD_CORE_CONTROLLER_SESSION_HPP
-#define CHEFERD_CORE_CONTROLLER_SESSION_HPP
+#ifndef SHIO_CORE_CONTROLLER_SESSION_HPP
+#define SHIO_CORE_CONTROLLER_SESSION_HPP
 
-#include "cheferd/networking/interface/core_interface.hpp"
-#include "cheferd/networking/stage_response/stage_response.hpp"
-#include "cheferd/networking/stage_response/stage_response_ack.hpp"
-#include "cheferd/networking/stage_response/stage_response_handshake.hpp"
+#include "shio/networking/interface/core_interface.hpp"
+#include "shio/networking/stage_response/stage_response.hpp"
+#include "shio/networking/stage_response/stage_response_ack.hpp"
+#include "shio/networking/stage_response/stage_response_handshake.hpp"
 #include "session.hpp"
 
-#include <cheferd/utils/logging.hpp>
-#include <cheferd/utils/options.hpp>
+#include <shio/utils/logging.hpp>
+#include <shio/utils/options.hpp>
 #include <condition_variable>
 #include <cstdio>
 #include <iostream>
@@ -21,7 +21,7 @@
 #include <thread>
 #include <unistd.h>
 
-namespace cheferd {
+namespace shio {
 
 /**
  * CoreControllerSession class.
@@ -85,6 +85,6 @@ public:
      */
     CoreInterface ShareInterface ();
 };
-} // namespace cheferd
+} // namespace shio
 
-#endif // CHEFERD_CORE_CONTROLLER_SESSION_HPP
+#endif // SHIO_CORE_CONTROLLER_SESSION_HPP

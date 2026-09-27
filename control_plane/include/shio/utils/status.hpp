@@ -1,13 +1,13 @@
 /**
- *   Copyright (c) 2025 INESC TEC.
+ *   Copyright (c) 2026 INESC TEC.
  **/
 
-#ifndef CHEFERD_STATUS_HPP
-#define CHEFERD_STATUS_HPP
+#ifndef SHIO_STATUS_HPP
+#define SHIO_STATUS_HPP
 
 #include <string>
 
-namespace cheferd {
+namespace shio {
 
 /**
  * PStatus class.
@@ -81,6 +81,6 @@ public:
      */
     std::string toString ();
 };
-} // namespace cheferd
+} // namespace shio
 
-#endif // CHEFERD_STATUS_HPP
+#endif // SHIO_STATUS_HPP

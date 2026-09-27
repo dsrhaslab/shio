@@ -1,12 +1,12 @@
 /**
- *   Copyright (c) 2025 INESC TEC.
+ *   Copyright (c) 2026 INESC TEC.
  **/
 
-#include "cheferd/networking/interface/core_interface.hpp"
+#include "shio/networking/interface/core_interface.hpp"
 
-#include "cheferd/utils/rules_file_parser.hpp"
+#include "shio/utils/rules_file_parser.hpp"
 
-namespace cheferd {
+namespace shio {
 
 int core_network_enforce_time = 0;
 int passthrough_network_enforce_time = 0;
@@ -408,4 +408,4 @@ void CoreInterface::fill_housekeeping_rules_grpc (
     }
 }
 
-} // namespace cheferd
+} // namespace shio

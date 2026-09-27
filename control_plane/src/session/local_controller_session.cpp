@@ -1,12 +1,12 @@
 /**
- *   Copyright (c) 2025 INESC TEC.
+ *   Copyright (c) 2026 INESC TEC.
  **/
 
-#include "cheferd/networking/stage_response/stage_response_stat.hpp"
+#include "shio/networking/stage_response/stage_response_stat.hpp"
 
-#include <cheferd/session/local_controller_session.hpp>
+#include <shio/session/local_controller_session.hpp>
 
-namespace cheferd {
+namespace shio {
 
 // LocalControllerSession parameterized constructor.
 LocalControllerSession::LocalControllerSession (const std::string& user_address) :
@@ -213,4 +213,4 @@ PStatus LocalControllerSession::SendRule (const std::string& user_address,
     return status;
 }
 
-} // namespace cheferd
+} // namespace shio

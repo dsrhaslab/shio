@@ -1,12 +1,12 @@
 /**
- *   Copyright (c) 2025 INESC TEC.
+ *   Copyright (c) 2026 INESC TEC.
  **/
 
-#include "cheferd/utils/config_file_parser.hpp"
+#include "shio/utils/config_file_parser.hpp"
 
-#include "cheferd/utils/logging.hpp"
+#include "shio/utils/logging.hpp"
 
-namespace cheferd {
+namespace shio {
 
 // ConfigFileParser default constructor.
 ConfigFileParser::ConfigFileParser ()
@@ -24,7 +24,7 @@ ConfigFileParser::~ConfigFileParser ()
 // in config file.
 void ConfigFileParser::select_default_housekeeping_rule ()
 {
-    housekeeping_rules_file = cheferd::option_housekeeping_rules_default;
+    housekeeping_rules_file = shio::option_housekeeping_rules_default;
 }
 
 // process_l1_controller_config call. Process l1 (global) controller configuration.
@@ -155,4 +155,4 @@ void ConfigFileParser::process_config_file (const std::string& path)
     }
 }
 
-} // namespace cheferd
+} // namespace shio

@@ -1,10 +1,10 @@
 /**
- *   Copyright (c) 2025 INESC TEC.
+ *   Copyright (c) 2026 INESC TEC.
  **/
 
-#include <cheferd/utils/status.hpp>
+#include <shio/utils/status.hpp>
 
-namespace cheferd {
+namespace shio {
 
 // PStatus default constructor.
 PStatus::PStatus () : state_ { StatusCode::nostatus }
@@ -80,4 +80,4 @@ std::string PStatus::toString ()
     return state_string;
 }
 
-} // namespace cheferd
+} // namespace shio

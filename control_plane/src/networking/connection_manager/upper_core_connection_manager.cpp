@@ -1,10 +1,10 @@
 /**
- *   Copyright (c) 2025 INESC TEC.
+ *   Copyright (c) 2026 INESC TEC.
  **/
 
-#include "cheferd/networking/connection_manager/upper_core_connection_manager.hpp"
+#include "shio/networking/connection_manager/upper_core_connection_manager.hpp"
 
-#include "cheferd/utils/logging.hpp"
+#include "shio/utils/logging.hpp"
 
 extern "C" {
 #include <fcntl.h>
@@ -12,7 +12,7 @@ extern "C" {
 #include <sys/types.h>
 }
 
-namespace cheferd {
+namespace shio {
 
 // UpperCoreConnectionManager parameterized constructor.
 UpperCoreConnectionManager::UpperCoreConnectionManager (const std::string& local_address,
@@ -65,4 +65,4 @@ void UpperCoreConnectionManager::stop_server ()
     server->Shutdown ();
 }
 
-} // namespace cheferd
+} // namespace shio

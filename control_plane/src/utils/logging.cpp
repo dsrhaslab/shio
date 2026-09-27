@@ -1,10 +1,10 @@
 /**
- *   Copyright (c) 2025 INESC TEC.
+ *   Copyright (c) 2026 INESC TEC.
  **/
 
-#include <cheferd/utils/logging.hpp>
+#include <shio/utils/logging.hpp>
 
-namespace cheferd {
+namespace shio {
 
 // static variable debug_enabled
 bool Logging::debug_enabled_ = false;
@@ -57,4 +57,4 @@ bool Logging::is_debug_enabled ()
     return debug_enabled_;
 }
 
-} // namespace cheferd
+} // namespace shio

@@ -1,14 +1,14 @@
 /**
- *   Copyright (c) 2025 INESC TEC.
+ *   Copyright (c) 2026 INESC TEC.
  **/
 
-#ifndef CHEFERD_COMMAND_LINE_PARSER_HPP
-#define CHEFERD_COMMAND_LINE_PARSER_HPP
+#ifndef SHIO_COMMAND_LINE_PARSER_HPP
+#define SHIO_COMMAND_LINE_PARSER_HPP
 
-#include <cheferd/utils/options.hpp>
+#include <shio/utils/options.hpp>
 #include <gflags/gflags.h>
 
-namespace cheferd {
+namespace shio {
 
 /**
  * CommandLineParser class.
@@ -40,6 +40,6 @@ public:
      */
     ~CommandLineParser ();
 };
-} // namespace cheferd
+} // namespace shio
 
-#endif // CHEFERD_COMMAND_LINE_PARSER_HPP
+#endif // SHIO_COMMAND_LINE_PARSER_HPP

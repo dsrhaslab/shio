@@ -1,12 +1,12 @@
 /**
- *   Copyright (c) 2025 INESC TEC.
+ *   Copyright (c) 2026 INESC TEC.
  **/
 
-#include "cheferd/utils/command_line_parser.hpp"
+#include "shio/utils/command_line_parser.hpp"
 
-#include "cheferd/utils/logging.hpp"
+#include "shio/utils/logging.hpp"
 
-namespace cheferd {
+namespace shio {
 
 DEFINE_string (config_file,
     "../files/core_config_file",
@@ -32,4 +32,4 @@ void CommandLineParser::process_program_options (int argc, char** argv)
     config_file_path = fLS::FLAGS_config_file;
 }
 
-} // namespace cheferd
+} // namespace shio

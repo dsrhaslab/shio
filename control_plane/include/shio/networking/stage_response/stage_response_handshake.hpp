@@ -1,17 +1,17 @@
 /**
- *   Copyright (c) 2025 INESC TEC.
+ *   Copyright (c) 2026 INESC TEC.
  **/
 
-#ifndef CHEFERD_STAGE_RESPONSE_HANDSHAKE_HPP
-#define CHEFERD_STAGE_RESPONSE_HANDSHAKE_HPP
+#ifndef SHIO_STAGE_RESPONSE_HANDSHAKE_HPP
+#define SHIO_STAGE_RESPONSE_HANDSHAKE_HPP
 
-#include "cheferd/networking/interface/interface_definitions.hpp"
-#include "cheferd/utils/logging.hpp"
+#include "shio/networking/interface/interface_definitions.hpp"
+#include "shio/utils/logging.hpp"
 #include "stage_response.hpp"
 
 #include <sstream>
 
-namespace cheferd {
+namespace shio {
 
 /**
  * StageResponseHandshake class.
@@ -104,6 +104,6 @@ public:
      */
     std::string toString () const override;
 };
-} // namespace cheferd
+} // namespace shio
 
-#endif // CHEFERD_STAGE_RESPONSE_HANDSHAKE_HPP
+#endif // SHIO_STAGE_RESPONSE_HANDSHAKE_HPP

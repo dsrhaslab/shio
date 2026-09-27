@@ -1,15 +1,15 @@
 /**
- *   Copyright (c) 2025 INESC TEC.
+ *   Copyright (c) 2026 INESC TEC.
  **/
 
-#ifndef CHEFERD_SUPERVISOR_CONNECTION_MANAGER_HPP
-#define CHEFERD_SUPERVISOR_CONNECTION_MANAGER_HPP
+#ifndef SHIO_SUPERVISOR_CONNECTION_MANAGER_HPP
+#define SHIO_SUPERVISOR_CONNECTION_MANAGER_HPP
 
-#include "cheferd/controller/global_controller.hpp"
-#include "cheferd/networking/connection_manager/connection_manager.hpp"
-#include "cheferd/session/data_plane_session.hpp"
-#include "cheferd/utils/options.hpp"
-#include "cheferd/utils/status.hpp"
+#include "shio/controller/global_controller.hpp"
+#include "shio/networking/connection_manager/connection_manager.hpp"
+#include "shio/session/data_plane_session.hpp"
+#include "shio/utils/options.hpp"
+#include "shio/utils/status.hpp"
 
 #include <thread>
 
@@ -34,7 +34,7 @@ using controllers_grpc_interface::SecondaryToPrimary;
 using grpc::Channel;
 using grpc::ClientContext;
 
-namespace cheferd {
+namespace shio {
 
 /**
  * SupervisorConnectionManager class.
@@ -171,6 +171,6 @@ public:
      */
     void SendPingToPrimary (std::string primary_address);
 };
-} // namespace cheferd
+} // namespace shio
 
-#endif // CHEFERD_SUPERVISOR_CONNECTION_MANAGER_HPP
+#endif // SHIO_SUPERVISOR_CONNECTION_MANAGER_HPP

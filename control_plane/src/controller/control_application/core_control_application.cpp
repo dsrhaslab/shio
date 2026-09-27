@@ -1,10 +1,10 @@
 /**
- *   Copyright (c) 2025 INESC TEC.
+ *   Copyright (c) 2026 INESC TEC.
  **/
 
-#include "cheferd/controller/control_application/core_control_application.hpp"
+#include "shio/controller/control_application/core_control_application.hpp"
 
-#include "cheferd/utils/rules_file_parser.hpp"
+#include "shio/utils/rules_file_parser.hpp"
 
 extern "C" {
 #include <fcntl.h>
@@ -12,7 +12,7 @@ extern "C" {
 #include <sys/types.h>
 }
 
-namespace cheferd {
+namespace shio {
 
 // CoreControlApplication parameterized constructor.
 CoreControlApplication::CoreControlApplication (const uint64_t& cycle_sleep_time,
@@ -1212,4 +1212,4 @@ void CoreControlApplication::remove_stage (const std::string& stage_name_env)
     stage_info_detailed.erase (stage_name_env);
 }
 
-} // namespace cheferd
+} // namespace shio

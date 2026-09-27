@@ -1,12 +1,12 @@
 /**
- *   Copyright (c) 2025 INESC TEC.
+ *   Copyright (c) 2026 INESC TEC.
  **/
 
-#include "cheferd/networking/stage_response/stage_response_stat.hpp"
+#include "shio/networking/stage_response/stage_response_stat.hpp"
 
-#include <cheferd/session/session.hpp>
+#include <shio/session/session.hpp>
 
-namespace cheferd {
+namespace shio {
 
 // Session default constructor.
 Session::Session () : session_id_ { -1 }
@@ -109,4 +109,4 @@ std::unique_ptr<StageResponse> Session::GetResult ()
     return DequeueResponseFromCompletionQueue ();
 }
 
-} // namespace cheferd
+} // namespace shio

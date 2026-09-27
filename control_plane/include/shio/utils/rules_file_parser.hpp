@@ -1,18 +1,18 @@
 /**
- *   Copyright (c) 2025 INESC TEC.
+ *   Copyright (c) 2026 INESC TEC.
  **/
 
-#ifndef CHEFERD_RULES_FILE_PARSER_HPP
-#define CHEFERD_RULES_FILE_PARSER_HPP
+#ifndef SHIO_RULES_FILE_PARSER_HPP
+#define SHIO_RULES_FILE_PARSER_HPP
 
-#include "cheferd/networking/interface/interface_definitions.hpp"
+#include "shio/networking/interface/interface_definitions.hpp"
 
-#include <cheferd/utils/options.hpp>
+#include <shio/utils/options.hpp>
 #include <fstream>
 #include <iostream>
 #include <vector>
 
-namespace cheferd {
+namespace shio {
 
 /**
  * RuleType enum class.
@@ -276,6 +276,6 @@ public:
      */
     void print_rules () const;
 };
-} // namespace cheferd
+} // namespace shio
 
-#endif // CHEFERD_RULES_FILE_PARSER_HPP
+#endif // SHIO_RULES_FILE_PARSER_HPP

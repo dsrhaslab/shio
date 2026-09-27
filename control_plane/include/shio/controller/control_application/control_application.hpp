@@ -1,15 +1,15 @@
 /**
- *   Copyright (c) 2025 INESC TEC.
+ *   Copyright (c) 2026 INESC TEC.
  **/
 
-#ifndef CHEFERD_CONTROL_APPLICATION_HPP
-#define CHEFERD_CONTROL_APPLICATION_HPP
+#ifndef SHIO_CONTROL_APPLICATION_HPP
+#define SHIO_CONTROL_APPLICATION_HPP
 
-#include "cheferd/networking/stage_response/stage_response_ack.hpp"
-#include "cheferd/networking/stage_response/stage_response_handshake.hpp"
-#include "cheferd/networking/stage_response/stage_response_stat.hpp"
-#include "cheferd/networking/stage_response/stage_response_stat_all.hpp"
-#include "cheferd/utils/logging.hpp"
+#include "shio/networking/stage_response/stage_response_ack.hpp"
+#include "shio/networking/stage_response/stage_response_handshake.hpp"
+#include "shio/networking/stage_response/stage_response_stat.hpp"
+#include "shio/networking/stage_response/stage_response_stat_all.hpp"
+#include "shio/utils/logging.hpp"
 
 #include <array>
 #include <atomic>
@@ -17,7 +17,7 @@
 
 using namespace std::chrono;
 
-namespace cheferd {
+namespace shio {
 
 /**
  * Struct StageInfo.
@@ -139,6 +139,6 @@ public:
     }
 };
 
-} // namespace cheferd
+} // namespace shio
 
-#endif // CHEFERD_CONTROL_APPLICATION_HPP
+#endif // SHIO_CONTROL_APPLICATION_HPP

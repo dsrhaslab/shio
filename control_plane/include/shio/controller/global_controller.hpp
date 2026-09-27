@@ -1,11 +1,11 @@
 /**
- *   Copyright (c) 2025 INESC TEC.
+ *   Copyright (c) 2026 INESC TEC.
  **/
 
-#ifndef CHEFERD_GLOBAL_CONTROLLER_HPP
-#define CHEFERD_GLOBAL_CONTROLLER_HPP
+#ifndef SHIO_GLOBAL_CONTROLLER_HPP
+#define SHIO_GLOBAL_CONTROLLER_HPP
 
-#include "cheferd/session/local_controller_session.hpp"
+#include "shio/session/local_controller_session.hpp"
 #include "control_application/control_application.hpp"
 #include "control_application/core_control_application.hpp"
 #include "control_application/supervisor_control_application.hpp"
@@ -22,7 +22,7 @@
 using controllers_grpc_interface::StageInfoConnect;
 using grpc::Status;
 
-namespace cheferd {
+namespace shio {
 
 /**
  * GlobalController class.
@@ -166,6 +166,6 @@ public:
     PStatus collect_stages_info ();
 };
 
-} // namespace cheferd
+} // namespace shio
 
-#endif // CHEFERD_GLOBAL_CONTROLLER_HPP
+#endif // SHIO_GLOBAL_CONTROLLER_HPP

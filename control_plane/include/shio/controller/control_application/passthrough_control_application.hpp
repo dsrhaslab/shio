@@ -1,12 +1,12 @@
 /**
- *   Copyright (c) 2025 INESC TEC.
+ *   Copyright (c) 2026 INESC TEC.
  **/
 
-#ifndef CHEFERD_PASSTHROUGH_CONTROL_APPLICATION_HPP
-#define CHEFERD_PASSTHROUGH_CONTROL_APPLICATION_HPP
+#ifndef SHIO_PASSTHROUGH_CONTROL_APPLICATION_HPP
+#define SHIO_PASSTHROUGH_CONTROL_APPLICATION_HPP
 
 #include "_deps/grpc-src/include/grpcpp/grpcpp.h"
-#include "cheferd/session/local_controller_session.hpp"
+#include "shio/session/local_controller_session.hpp"
 #include "control_application.hpp"
 
 #include <regex>
@@ -31,7 +31,7 @@ using controllers_grpc_interface::ControllerToUpper;
 using controllers_grpc_interface::StageInfoConnect;
 using controllers_grpc_interface::StageReadyRaw;
 
-namespace cheferd {
+namespace shio {
 
 /**
  * PassthroughControlApplication class.
@@ -182,6 +182,6 @@ public:
     void stop_feedback_loop () override;
 };
 
-} // namespace cheferd
+} // namespace shio
 
-#endif // CHEFERD_PASSTHROUGH_CONTROL_APPLICATION_HPP
+#endif // SHIO_PASSTHROUGH_CONTROL_APPLICATION_HPP

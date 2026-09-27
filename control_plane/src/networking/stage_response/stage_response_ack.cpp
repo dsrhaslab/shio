@@ -1,10 +1,10 @@
 /**
- *   Copyright (c) 2025 INESC TEC.
+ *   Copyright (c) 2026 INESC TEC.
  **/
 
-#include "cheferd/networking/stage_response/stage_response_ack.hpp"
+#include "shio/networking/stage_response/stage_response_ack.hpp"
 
-namespace cheferd {
+namespace shio {
 
 // StageResponseACK default constructor.
 StageResponseACK::StageResponseACK () : ack_value_ { 0 }
@@ -40,4 +40,4 @@ std::string StageResponseACK::toString () const
     return return_value_t;
 }
 
-} // namespace cheferd
+} // namespace shio

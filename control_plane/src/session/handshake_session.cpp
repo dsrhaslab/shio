@@ -1,10 +1,10 @@
 /**
- *   Copyright (c) 2025 INESC TEC.
+ *   Copyright (c) 2026 INESC TEC.
  **/
 
-#include <cheferd/session/handshake_session.hpp>
+#include <shio/session/handshake_session.hpp>
 
-namespace cheferd {
+namespace shio {
 
 // HandshakeSession default constructor.
 HandshakeSession::HandshakeSession () : Session {}, socket_id_ { 0 }, interface_ {}
@@ -90,4 +90,4 @@ HandshakeSession::SendRule (int socket, const std::string& rule, ControlOperatio
     return status;
 }
 
-} // namespace cheferd
+} // namespace shio

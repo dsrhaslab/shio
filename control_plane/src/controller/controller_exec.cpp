@@ -1,20 +1,20 @@
 /**
- *   Copyright (c) 2025 INESC TEC.
+ *   Copyright (c) 2026 INESC TEC.
  **/
 
-#include <cheferd/controller/controller.hpp>
-#include <cheferd/utils/command_line_parser.hpp>
-#include <cheferd/utils/config_file_parser.hpp>
-#include <cheferd/utils/jobs_config_file_parser.hpp>
-#include <cheferd/utils/logging.hpp>
-#include <cheferd/utils/policy_generator.hpp>
+#include <shio/controller/controller.hpp>
+#include <shio/utils/command_line_parser.hpp>
+#include <shio/utils/config_file_parser.hpp>
+#include <shio/utils/jobs_config_file_parser.hpp>
+#include <shio/utils/logging.hpp>
+#include <shio/utils/policy_generator.hpp>
 
-using namespace cheferd;
+using namespace shio;
 
 int main (int argc, char** argv)
 {
-    Logging logger { cheferd::option_option_logging_ };
-    Logging::log_info ("cheferd controller starting ...");
+    Logging logger { shio::option_option_logging_ };
+    Logging::log_info ("shio controller starting ...");
 
     CommandLineParser commandLineParser;
 

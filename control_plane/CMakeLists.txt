@@ -92,7 +92,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 # Setup the options that CMake can take in
 option(shio_INSTALL "Install shio's header and library" ON)
 option(BUILD_SHARED_LIBS "Build shared libraries" ON)
-option(CHEFERD_TESTS "Build Cheferd's unit tests" OFF)
+option(SHIO_TESTS "Build Shio's unit tests" OFF)
 
 
 # Setup the basic C++ Compiler flags
@@ -274,8 +274,8 @@ target_link_libraries(shio yaml-cpp)
 # tests
 
 
-if (CHEFERD_TESTS)
-    message(STATUS "Compiling CHEFERD tests ...")
+if (SHIO_TESTS)
+    message(STATUS "Compiling SHIO tests ...")
     enable_testing()
 
     function(shio_test test_file exec_file)
@@ -303,7 +303,7 @@ if (CHEFERD_TESTS)
     shio_test("tests/shio_collect_statistics_test.cpp" "collect_statistics_test")
     shio_test("tests/shio_enforcement_control_test.cpp" "enforcement_control_test")
 
-endif (CHEFERD_TESTS)
+endif (SHIO_TESTS)
 
 
 # ---------------------------------------------------------------------------- #

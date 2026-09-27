@@ -1,15 +1,15 @@
 /**
- *   Copyright (c) 2025 INESC TEC.
+ *   Copyright (c) 2026 INESC TEC.
  **/
 
-#ifndef CHEFERD_CORE_CONTROL_APPLICATION_HPP
-#define CHEFERD_CORE_CONTROL_APPLICATION_HPP
+#ifndef SHIO_CORE_CONTROL_APPLICATION_HPP
+#define SHIO_CORE_CONTROL_APPLICATION_HPP
 
 #include "_deps/grpc-src/include/grpcpp/grpcpp.h"
-#include "cheferd/networking/stage_response/stage_response_stat_controller.hpp"
-#include "cheferd/session/core_controller_session.hpp"
-#include "cheferd/session/local_controller_session.hpp"
-#include "cheferd/utils/options.hpp"
+#include "shio/networking/stage_response/stage_response_stat_controller.hpp"
+#include "shio/session/core_controller_session.hpp"
+#include "shio/session/local_controller_session.hpp"
+#include "shio/utils/options.hpp"
 #include "control_application.hpp"
 
 #include <regex>
@@ -29,7 +29,7 @@ using grpc::Server;
 using grpc::ServerContext;
 using grpc::Status;
 
-namespace cheferd {
+namespace shio {
 
 /**
  * CoreControlApplication class.
@@ -379,6 +379,6 @@ public:
     void EnforceSystemLimit (std::unordered_map<std::string, uint64_t>& limits_per_operation);
 };
 
-} // namespace cheferd
+} // namespace shio
 
-#endif // CHEFERD_CORE_CONTROL_APPLICATION_HPP
+#endif // SHIO_CORE_CONTROL_APPLICATION_HPP

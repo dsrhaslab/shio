@@ -1,17 +1,17 @@
 /**
- *   Copyright (c) 2025 INESC TEC.
+ *   Copyright (c) 2026 INESC TEC.
  **/
 
-#ifndef CHEFERD_LOGGING_HPP
-#define CHEFERD_LOGGING_HPP
+#ifndef SHIO_LOGGING_HPP
+#define SHIO_LOGGING_HPP
 
-#include <cheferd/utils/options.hpp>
+#include <shio/utils/options.hpp>
 #include <iostream>
 #include <spdlog/logger.h>
 #include <spdlog/sinks/basic_file_sink.h>
 #include <spdlog/spdlog.h>
 
-namespace cheferd {
+namespace shio {
 
 /**
  * Logging class. This class contains the primitives to write logging messages
@@ -72,6 +72,6 @@ public:
      */
     static bool is_debug_enabled ();
 };
-} // namespace cheferd
+} // namespace shio
 
-#endif // CHEFERD_LOGGING_HPP
+#endif // SHIO_LOGGING_HPP

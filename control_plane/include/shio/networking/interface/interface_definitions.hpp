@@ -1,18 +1,18 @@
 /**
- *   Copyright (c) 2025 INESC TEC.
+ *   Copyright (c) 2026 INESC TEC.
  **/
 
-#ifndef CHEFERD_INTERFACE_DEFINITIONS_HPP
-#define CHEFERD_INTERFACE_DEFINITIONS_HPP
+#ifndef SHIO_INTERFACE_DEFINITIONS_HPP
+#define SHIO_INTERFACE_DEFINITIONS_HPP
 
-#include "cheferd/utils/context_propagation_definitions.hpp"
+#include "shio/utils/context_propagation_definitions.hpp"
 
 #include <climits>
 #include <cstdint>
 #include <string>
 #include <unordered_map>
 
-namespace cheferd {
+namespace shio {
 
 /**
  * Operation types (ControlOperation::m_operation_type) exchanged between controllers and data
@@ -284,6 +284,6 @@ struct StatsDataGlobal {
     double op_rate[op_number];
 };
 
-} // namespace cheferd
+} // namespace shio
 
-#endif // CHEFERD_INTERFACE_DEFINITIONS_HPP
+#endif // SHIO_INTERFACE_DEFINITIONS_HPP

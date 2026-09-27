@@ -1,15 +1,15 @@
 /**
- *   Copyright (c) 2025 INESC TEC.
+ *   Copyright (c) 2026 INESC TEC.
  **/
 
-#ifndef CHEFERD_LOCAL_INTERFACE_HPP
-#define CHEFERD_LOCAL_INTERFACE_HPP
+#ifndef SHIO_LOCAL_INTERFACE_HPP
+#define SHIO_LOCAL_INTERFACE_HPP
 
 #include "_deps/grpc-src/include/grpcpp/grpcpp.h"
-#include "cheferd/networking/stage_response/stage_response_stat.hpp"
-#include "cheferd/networking/stage_response/stage_response_stat_all.hpp"
-#include "cheferd/networking/stage_response/stage_response_stats.hpp"
-#include "cheferd/utils/logging.hpp"
+#include "shio/networking/stage_response/stage_response_stat.hpp"
+#include "shio/networking/stage_response/stage_response_stat_all.hpp"
+#include "shio/networking/stage_response/stage_response_stats.hpp"
+#include "shio/utils/logging.hpp"
 #include "southbound_interface.hpp"
 
 #include <cstdio>
@@ -39,7 +39,7 @@ using controllers_grpc_interface::SimplifiedHandshakeRaw;
 using grpc::Channel;
 using grpc::ClientContext;
 
-namespace cheferd {
+namespace shio {
 
 // Accumulated time (in microseconds) spent in enforcement RPCs, reported by the control
 // applications at the end of a benchmark.
@@ -177,6 +177,6 @@ public:
         std::unique_ptr<std::unordered_map<std::string, std::unique_ptr<StageResponse>>>&
             stats_tf_objects);
 };
-} // namespace cheferd
+} // namespace shio
 
-#endif // CHEFERD_LOCAL_INTERFACE_HPP
+#endif // SHIO_LOCAL_INTERFACE_HPP

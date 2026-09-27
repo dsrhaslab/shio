@@ -1,13 +1,13 @@
 /**
- *   Copyright (c) 2025 INESC TEC.
+ *   Copyright (c) 2026 INESC TEC.
  **/
 
-#ifndef CHEFERD_STAGE_RESPONSE_STAT_HPP
-#define CHEFERD_STAGE_RESPONSE_STAT_HPP
+#ifndef SHIO_STAGE_RESPONSE_STAT_HPP
+#define SHIO_STAGE_RESPONSE_STAT_HPP
 
 #include "stage_response.hpp"
 
-namespace cheferd {
+namespace shio {
 
 /**
  * StageResponseStat class.
@@ -67,6 +67,6 @@ public:
      */
     std::string toString () const override;
 };
-} // namespace cheferd
+} // namespace shio
 
-#endif // CHEFERD_STAGE_RESPONSE_STAT_HPP
+#endif // SHIO_STAGE_RESPONSE_STAT_HPP

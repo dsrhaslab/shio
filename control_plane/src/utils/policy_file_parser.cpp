@@ -1,12 +1,12 @@
 /**
- *   Copyright (c) 2025 INESC TEC.
+ *   Copyright (c) 2026 INESC TEC.
  **/
 
-#include "cheferd/utils/policy_file_parser.hpp"
+#include "shio/utils/policy_file_parser.hpp"
 
-#include "cheferd/utils/logging.hpp"
+#include "shio/utils/logging.hpp"
 
-namespace cheferd {
+namespace shio {
 
 // PolicyFileParser parameterized constructor.
 PolicyFileParser::PolicyFileParser (const std::string& path) : m_system_limits {}, m_priorities {}
@@ -79,4 +79,4 @@ void PolicyFileParser::process_priorities (YAML::Node priorities)
     }
 };
 
-} // namespace cheferd
+} // namespace shio

@@ -1,10 +1,10 @@
 /**
- *   Copyright (c) 2025 INESC TEC.
+ *   Copyright (c) 2026 INESC TEC.
  **/
 
-#include "cheferd/networking/stage_response/stage_response.hpp"
+#include "shio/networking/stage_response/stage_response.hpp"
 
-namespace cheferd {
+namespace shio {
 
 // StageResponse default constructor.
 StageResponse::StageResponse () = default;
@@ -28,4 +28,4 @@ std::string StageResponse::toString () const
     return "StageResponse::";
 }
 
-} // namespace cheferd
+} // namespace shio

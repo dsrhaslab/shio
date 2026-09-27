@@ -1,10 +1,10 @@
 /**
- *   Copyright (c) 2025 INESC TEC.
+ *   Copyright (c) 2026 INESC TEC.
  **/
 
-#include <cheferd/session/data_plane_session.hpp>
+#include <shio/session/data_plane_session.hpp>
 
-namespace cheferd {
+namespace shio {
 
 // DataPlaneSession parameterized constructor.
 DataPlaneSession::DataPlaneSession (const char* socket_name) : Session {}, interface_ {}
@@ -272,4 +272,4 @@ DataPlaneSession::SendRule (int socket, const std::string& rule, ControlOperatio
     return status;
 }
 
-} // namespace cheferd
+} // namespace shio

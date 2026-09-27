@@ -1,20 +1,20 @@
 /**
- *   Copyright (c) 2025 INESC TEC.
+ *   Copyright (c) 2026 INESC TEC.
  **/
 
-#ifndef CHEFERD_LOCAL_CONNECTION_MANAGER_HPP
-#define CHEFERD_LOCAL_CONNECTION_MANAGER_HPP
+#ifndef SHIO_LOCAL_CONNECTION_MANAGER_HPP
+#define SHIO_LOCAL_CONNECTION_MANAGER_HPP
 
-#include "cheferd/controller/control_application/local_control_application.hpp"
-#include "cheferd/networking/connection_manager/connection_manager.hpp"
-#include "cheferd/networking/interface/paio_interface.hpp"
-#include "cheferd/session/data_plane_session.hpp"
-#include "cheferd/utils/options.hpp"
-#include "cheferd/utils/status.hpp"
+#include "shio/controller/control_application/local_control_application.hpp"
+#include "shio/networking/connection_manager/connection_manager.hpp"
+#include "shio/networking/interface/paio_interface.hpp"
+#include "shio/session/data_plane_session.hpp"
+#include "shio/utils/options.hpp"
+#include "shio/utils/status.hpp"
 
 #include <thread>
 
-namespace cheferd {
+namespace shio {
 
 // Backoff delays (in microseconds) used by Start () while no stage is connecting.
 #define INITIAL_CONNECTION_DELAY 500000
@@ -126,6 +126,6 @@ public:
      */
     void Stop () override;
 };
-} // namespace cheferd
+} // namespace shio
 
-#endif // CHEFERD_LOCAL_CONNECTION_MANAGER_HPP
+#endif // SHIO_LOCAL_CONNECTION_MANAGER_HPP

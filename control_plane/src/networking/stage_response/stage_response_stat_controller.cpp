@@ -1,10 +1,10 @@
 /**
- *   Copyright (c) 2025 INESC TEC.
+ *   Copyright (c) 2026 INESC TEC.
  **/
 
-#include "cheferd/networking/stage_response/stage_response_stat_controller.hpp"
+#include "shio/networking/stage_response/stage_response_stat_controller.hpp"
 
-namespace cheferd {
+namespace shio {
 
 // StageResponseStatController default constructor.
 StageResponseStatController::StageResponseStatController () noexcept :
@@ -47,4 +47,4 @@ std::string StageResponseStatController::toString () const
     return result;
 }
 
-} // namespace cheferd
+} // namespace shio

@@ -1,17 +1,17 @@
 /**
- *   Copyright (c) 2025 INESC TEC.
+ *   Copyright (c) 2026 INESC TEC.
  **/
 
-#ifndef CHEFERD_CONNECTION_MANAGER_HPP
-#define CHEFERD_CONNECTION_MANAGER_HPP
+#ifndef SHIO_CONNECTION_MANAGER_HPP
+#define SHIO_CONNECTION_MANAGER_HPP
 
-#include "cheferd/controller/control_application/control_application.hpp"
-#include "cheferd/utils/options.hpp"
-#include "cheferd/utils/status.hpp"
+#include "shio/controller/control_application/control_application.hpp"
+#include "shio/utils/options.hpp"
+#include "shio/utils/status.hpp"
 
 #include <thread>
 
-namespace cheferd {
+namespace shio {
 
 /**
  * ConnectionManager class.
@@ -35,6 +35,6 @@ public:
      */
     virtual void Stop () {};
 };
-} // namespace cheferd
+} // namespace shio
 
-#endif // CHEFERD_CONNECTION_MANAGER_HPP
+#endif // SHIO_CONNECTION_MANAGER_HPP

@@ -1,21 +1,21 @@
 /**
- *   Copyright (c) 2025 INESC TEC.
+ *   Copyright (c) 2026 INESC TEC.
  **/
 
-#include "cheferd/controller/control_application/local_control_application.hpp"
-#include "cheferd/controller/control_application/supervisor_control_application.hpp"
-#include "cheferd/networking/connection_manager/core_connection_manager.hpp"
-#include "cheferd/networking/connection_manager/local_connection_manager.hpp"
-#include "cheferd/networking/connection_manager/supervisor_connection_manager.hpp"
+#include "shio/controller/control_application/local_control_application.hpp"
+#include "shio/controller/control_application/supervisor_control_application.hpp"
+#include "shio/networking/connection_manager/core_connection_manager.hpp"
+#include "shio/networking/connection_manager/local_connection_manager.hpp"
+#include "shio/networking/connection_manager/supervisor_connection_manager.hpp"
 
-#include <cheferd/controller/controller.hpp>
-#include <cheferd/utils/jobs_config_file_parser.hpp>
-#include <cheferd/utils/logging.hpp>
-#include <cheferd/utils/policy_file_parser.hpp>
-#include <cheferd/utils/policy_generator.hpp>
-#include <cheferd/utils/rules_file_parser.hpp>
+#include <shio/controller/controller.hpp>
+#include <shio/utils/jobs_config_file_parser.hpp>
+#include <shio/utils/logging.hpp>
+#include <shio/utils/policy_file_parser.hpp>
+#include <shio/utils/policy_generator.hpp>
+#include <shio/utils/rules_file_parser.hpp>
 
-namespace cheferd {
+namespace shio {
 
 // Controller parameterized constructor.
 Controller::Controller (ConfigFileParser config_file_parser) :
@@ -211,4 +211,4 @@ void Controller::StopController ()
     m_control_application->stop_feedback_loop ();
 }
 
-} // namespace cheferd
+} // namespace shio

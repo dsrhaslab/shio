@@ -1,10 +1,10 @@
 /**
- *   Copyright (c) 2025 INESC TEC.
+ *   Copyright (c) 2026 INESC TEC.
  **/
 
-#include "cheferd/controller/control_application/local_control_application.hpp"
+#include "shio/controller/control_application/local_control_application.hpp"
 
-#include "cheferd/utils/rules_file_parser.hpp"
+#include "shio/utils/rules_file_parser.hpp"
 
 extern "C" {
 #include <fcntl.h>
@@ -12,7 +12,7 @@ extern "C" {
 #include <sys/types.h>
 }
 
-namespace cheferd {
+namespace shio {
 
 // LocalControlApplication parameterized constructor.
 LocalControlApplication::LocalControlApplication (const std::string& core_address,
@@ -1191,4 +1191,4 @@ void LocalControlApplication::parse_rule (const std::string& rule,
     }
 }
 
-} // namespace cheferd
+} // namespace shio

@@ -1,5 +1,5 @@
 /**
- *   Copyright (c) 2025 INESC TEC.
+ *   Copyright (c) 2026 INESC TEC.
  **/
 
 #ifndef PAIO_CONTEXT_PROPAGATION_DEFINITIONS_HPP
@@ -13,7 +13,7 @@
  *  context, or both. Also, we will need to change the RulesParser and SouthboundConnectionHandler
  *  classes.
  */
-namespace cheferd {
+namespace shio {
 
 /**
  * ContextType: Defines the available operation context classifiers.
@@ -360,6 +360,6 @@ enum class KVS {
 const int kvs_size = 10;
 // ------------------------------------------------------------------------------------
 
-} // namespace cheferd
+} // namespace shio
 
 #endif // PAIO_CONTEXT_PROPAGATION_DEFINITIONS_HPP

@@ -1,9 +1,9 @@
 /**
- *   Copyright (c) 2025 INESC TEC.
+ *   Copyright (c) 2026 INESC TEC.
  **/
 
-#ifndef CHEFERD_STAGE_RESPONSE_STAT_CONTROLLER_HPP
-#define CHEFERD_STAGE_RESPONSE_STAT_CONTROLLER_HPP
+#ifndef SHIO_STAGE_RESPONSE_STAT_CONTROLLER_HPP
+#define SHIO_STAGE_RESPONSE_STAT_CONTROLLER_HPP
 
 #include "stage_response.hpp"
 
@@ -11,7 +11,7 @@
 #include <string>
 #include <unordered_map>
 
-namespace cheferd {
+namespace shio {
 
 /**
  * StageResponseStatController class.
@@ -65,6 +65,6 @@ public:
     std::string toString () const override;
 };
 
-} // namespace cheferd
+} // namespace shio
 
-#endif // CHEFERD_STAGE_RESPONSE_STAT_CONTROLLER_HPP
+#endif // SHIO_STAGE_RESPONSE_STAT_CONTROLLER_HPP

@@ -1,13 +1,13 @@
 /**
- *   Copyright (c) 2025 INESC TEC.
+ *   Copyright (c) 2026 INESC TEC.
  **/
 
-#include "cheferd/utils/logging.hpp"
+#include "shio/utils/logging.hpp"
 
-#include <cheferd/utils/rules_file_parser.hpp>
+#include <shio/utils/rules_file_parser.hpp>
 #include <limits>
 
-namespace cheferd {
+namespace shio {
 
 // RulesFileParser default constructor.
 RulesFileParser::RulesFileParser ()
@@ -107,7 +107,7 @@ int RulesFileParser::read_rules_from_file (const std::string& path)
 // convert_housekeeping_operation call. Convert a string to a HousekeepingOperation.
 HousekeepingOperation RulesFileParser::convert_housekeeping_operation (const std::string& operation)
 {
-    switch (cheferd::hash (operation.data ())) {
+    switch (shio::hash (operation.data ())) {
         case "create_channel"_:
             return HousekeepingOperation::create_channel;
         case "create_object"_:
@@ -135,7 +135,7 @@ int RulesFileParser::convert_enforcement_operation (const EnforcementObjectType&
 {
     switch (object_type) {
         case EnforcementObjectType::DRL:
-            switch (cheferd::hash (operation.data ())) {
+            switch (shio::hash (operation.data ())) {
                 case "init"_:
                     return 1;
                 case "rate"_:
@@ -169,7 +169,7 @@ std::string RulesFileParser::convert_enforcement_operation (const int& operation
 // vice-versa.
 int RulesFileParser::convert_context_type_definition (const std::string& context_type)
 {
-    switch (cheferd::hash (context_type.data ())) {
+    switch (shio::hash (context_type.data ())) {
         case "general"_:
             return static_cast<long> (ContextType::PAIO_GENERAL);
         case "posix"_:
@@ -215,7 +215,7 @@ std::string RulesFileParser::convert_context_type_definition (const ContextType&
 long RulesFileParser::convert_differentiation_definitions (const std::string& context_type,
     const std::string& definition)
 {
-    switch (cheferd::hash (context_type.data ())) {
+    switch (shio::hash (context_type.data ())) {
         case "general"_:
             return convert_paio_general_definitions (definition);
         case "posix"_:
@@ -263,7 +263,7 @@ std::string RulesFileParser::convert_differentiation_definitions (const ContextT
 // string to long and vice-versa.
 long RulesFileParser::convert_paio_general_definitions (const std::string& general_definitions)
 {
-    switch (cheferd::hash (general_definitions.data ())) {
+    switch (shio::hash (general_definitions.data ())) {
         case "foreground"_:
             return static_cast<long> (PAIO_GENERAL::foreground);
         case "background"_:
@@ -299,7 +299,7 @@ std::string RulesFileParser::convert_paio_general_definitions (
 long RulesFileParser::convert_posix_lsm_simple_definitions (
     const std::string& posix_lsm_definitions)
 {
-    switch (cheferd::hash (posix_lsm_definitions.data ())) {
+    switch (shio::hash (posix_lsm_definitions.data ())) {
         case "bg_flush"_:
             return static_cast<long> (LSM_KVS_SIMPLE::bg_flush);
         case "bg_compaction_high_priority"_:
@@ -335,7 +335,7 @@ std::string RulesFileParser::convert_posix_lsm_simple_definitions (
 long RulesFileParser::convert_posix_lsm_detailed_definitions (
     const std::string& posix_lsm_definitions)
 {
-    switch (cheferd::hash (posix_lsm_definitions.data ())) {
+    switch (shio::hash (posix_lsm_definitions.data ())) {
         case "bg_flush"_:
             return static_cast<long> (LSM_KVS_DETAILED::bg_flush);
         case "bg_compaction"_:
@@ -386,7 +386,7 @@ std::string RulesFileParser::convert_posix_lsm_detailed_definitions (
 // vice-versa.
 long RulesFileParser::convert_posix_definitions (const std::string& posix_definitions)
 {
-    switch (cheferd::hash (posix_definitions.data ())) {
+    switch (shio::hash (posix_definitions.data ())) {
         case "read"_:
             return static_cast<long> (POSIX::read);
         case "write"_:
@@ -628,7 +628,7 @@ std::string RulesFileParser::convert_posix_definitions (const POSIX& posix_defin
 // to long and vice-versa.
 long RulesFileParser::convert_posix_meta_definitions (const std::string& posix_meta_definitions)
 {
-    switch (cheferd::hash (posix_meta_definitions.data ())) {
+    switch (shio::hash (posix_meta_definitions.data ())) {
         case "foreground"_:
             return static_cast<long> (POSIX_META::foreground);
         case "background"_:
@@ -687,7 +687,7 @@ std::string RulesFileParser::convert_posix_meta_definitions (
 // long and vice-versa.
 long RulesFileParser::convert_op_test_definitions (const std::string& op_test_definitions)
 {
-    switch (cheferd::hash (op_test_definitions.data ())) {
+    switch (shio::hash (op_test_definitions.data ())) {
         case "op1"_:
             return static_cast<long> (OP_TEST::op1);
         case "op2"_:
@@ -1105,7 +1105,7 @@ std::string RulesFileParser::convert_op_test_definitions (const OP_TEST& op_test
 // vice-versa.
 long RulesFileParser::convert_kvs_definitions (const std::string& kvs_definitions)
 {
-    switch (cheferd::hash (kvs_definitions.data ())) {
+    switch (shio::hash (kvs_definitions.data ())) {
         case "put"_:
             return static_cast<long> (KVS::put);
         case "get"_:
@@ -1278,4 +1278,4 @@ void RulesFileParser::print_rules () const
     }
 }
 
-} // namespace cheferd
+} // namespace shio

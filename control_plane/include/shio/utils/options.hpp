@@ -1,14 +1,14 @@
 /**
- *   Copyright (c) 2025 INESC TEC.
+ *   Copyright (c) 2026 INESC TEC.
  **/
 
-#ifndef CHEFERD_OPTIONS_HPP
-#define CHEFERD_OPTIONS_HPP
+#ifndef SHIO_OPTIONS_HPP
+#define SHIO_OPTIONS_HPP
 
 #include <string>
 #include <cstdint>
 
-namespace cheferd {
+namespace shio {
 
 /**
  * Transport used between a local controller and its data plane stages.
@@ -118,6 +118,6 @@ const uint64_t option_default_supervisor_control_application_sleep = 5000000;
  */
 const uint64_t option_default_local_control_application_sleep = 1000000;
 
-} // namespace cheferd
+} // namespace shio
 
-#endif // CHEFERD_OPTIONS_HPP
+#endif // SHIO_OPTIONS_HPP

@@ -1,17 +1,17 @@
 /**
- *   Copyright (c) 2025 INESC TEC.
+ *   Copyright (c) 2026 INESC TEC.
  **/
 
-#ifndef CHEFERD_SUPERVISOR_CONTROL_APPLICATION_HPP
-#define CHEFERD_SUPERVISOR_CONTROL_APPLICATION_HPP
+#ifndef SHIO_SUPERVISOR_CONTROL_APPLICATION_HPP
+#define SHIO_SUPERVISOR_CONTROL_APPLICATION_HPP
 
-#include "cheferd/session/core_controller_session.hpp"
+#include "shio/session/core_controller_session.hpp"
 #include "control_application.hpp"
 #include "core_control_application.hpp"
 
 #include <regex>
 
-namespace cheferd {
+namespace shio {
 
 /**
  * SupervisorControlApplication class.
@@ -206,6 +206,6 @@ public:
      */
     void stop_feedback_loop () override;
 };
-} // namespace cheferd
+} // namespace shio
 
-#endif // CHEFERD_SUPERVISOR_CONTROL_APPLICATION_HPP
+#endif // SHIO_SUPERVISOR_CONTROL_APPLICATION_HPP

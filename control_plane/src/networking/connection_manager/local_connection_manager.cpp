@@ -1,12 +1,12 @@
 /**
- *   Copyright (c) 2025 INESC TEC.
+ *   Copyright (c) 2026 INESC TEC.
  **/
 
-#include "cheferd/networking/connection_manager/local_connection_manager.hpp"
+#include "shio/networking/connection_manager/local_connection_manager.hpp"
 
-#include "cheferd/utils/logging.hpp"
+#include "shio/utils/logging.hpp"
 
-namespace cheferd {
+namespace shio {
 
 // LocalConnectionManager parameterized constructor.
 LocalConnectionManager::LocalConnectionManager (const std::string& controller_address,
@@ -284,4 +284,4 @@ void LocalConnectionManager::operator() (int socket, DataPlaneSession* session)
     session->StartSession ();
 }
 
-} // namespace cheferd
+} // namespace shio

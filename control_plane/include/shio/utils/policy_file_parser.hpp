@@ -1,15 +1,15 @@
 /**
- *   Copyright (c) 2025 INESC TEC.
+ *   Copyright (c) 2026 INESC TEC.
  **/
 
-#ifndef CHEFERD_POLICY_FILE_PARSER_HPP
-#define CHEFERD_POLICY_FILE_PARSER_HPP
+#ifndef SHIO_POLICY_FILE_PARSER_HPP
+#define SHIO_POLICY_FILE_PARSER_HPP
 
-#include <cheferd/utils/options.hpp>
+#include <shio/utils/options.hpp>
 #include <unordered_map>
 #include <yaml-cpp/yaml.h>
 
-namespace cheferd {
+namespace shio {
 
 /**
  * PolicyFileParser class.
@@ -51,6 +51,6 @@ public:
      */
     void process_priorities (YAML::Node priorities);
 };
-} // namespace cheferd
+} // namespace shio
 
-#endif // CHEFERD_POLICY_FILE_PARSER_HPP
+#endif // SHIO_POLICY_FILE_PARSER_HPP

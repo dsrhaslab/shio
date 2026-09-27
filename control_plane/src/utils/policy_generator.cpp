@@ -1,13 +1,13 @@
 /**
- *   Copyright (c) 2025 INESC TEC.
+ *   Copyright (c) 2026 INESC TEC.
  **/
 
-#include "cheferd/networking/interface/interface_definitions.hpp"
+#include "shio/networking/interface/interface_definitions.hpp"
 
-#include <cheferd/utils/policy_generator.hpp>
-#include <cheferd/utils/rules_file_parser.hpp>
+#include <shio/utils/policy_generator.hpp>
+#include <shio/utils/rules_file_parser.hpp>
 
-namespace cheferd {
+namespace shio {
 
 // PolicyGenerator default constructor.
 PolicyGenerator::PolicyGenerator () = default;
@@ -71,4 +71,4 @@ void PolicyGenerator::convert_housekeeping_create_object_string (
         + std::to_string (hsk_raw.m_property_second) + "|";
 }
 
-} // namespace cheferd
+} // namespace shio

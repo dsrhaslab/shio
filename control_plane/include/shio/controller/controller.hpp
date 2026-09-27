@@ -1,19 +1,19 @@
 /**
- *   Copyright (c) 2025 INESC TEC.
+ *   Copyright (c) 2026 INESC TEC.
  **/
 
-#ifndef CHEFERD_CONTROLLER_HPP
-#define CHEFERD_CONTROLLER_HPP
+#ifndef SHIO_CONTROLLER_HPP
+#define SHIO_CONTROLLER_HPP
 
-#include "cheferd/controller/control_application/control_application.hpp"
-#include "cheferd/networking/connection_manager/connection_manager.hpp"
+#include "shio/controller/control_application/control_application.hpp"
+#include "shio/networking/connection_manager/connection_manager.hpp"
 
-#include <cheferd/controller/cluster_controller.hpp>
-#include <cheferd/controller/global_controller.hpp>
-#include <cheferd/utils/config_file_parser.hpp>
-#include <cheferd/utils/options.hpp>
+#include <shio/controller/cluster_controller.hpp>
+#include <shio/controller/global_controller.hpp>
+#include <shio/utils/config_file_parser.hpp>
+#include <shio/utils/options.hpp>
 
-namespace cheferd {
+namespace shio {
 
 /**
  * Controller class. Gateway component to start the whole system.
@@ -95,5 +95,5 @@ public:
      */
     ~Controller ();
 };
-} // namespace cheferd
-#endif // CHEFERD_CONTROLLER_HPP
+} // namespace shio
+#endif // SHIO_CONTROLLER_HPP

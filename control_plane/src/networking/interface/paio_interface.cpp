@@ -1,13 +1,13 @@
 /**
- *   Copyright (c) 2025 INESC TEC.
+ *   Copyright (c) 2026 INESC TEC.
  **/
 
-#include "cheferd/networking/interface/paio_interface.hpp"
+#include "shio/networking/interface/paio_interface.hpp"
 
-#include "cheferd/networking/stage_response/stage_response.hpp"
-#include "cheferd/utils/rules_file_parser.hpp"
+#include "shio/networking/stage_response/stage_response.hpp"
+#include "shio/utils/rules_file_parser.hpp"
 
-namespace cheferd {
+namespace shio {
 
 // PAIOInterface default constructor.
 PAIOInterface::PAIOInterface () = default;
@@ -563,4 +563,4 @@ void PAIOInterface::fill_enforcement_rule (EnforcementRuleRaw* enf_object,
     }
 }
 
-} // namespace cheferd
+} // namespace shio

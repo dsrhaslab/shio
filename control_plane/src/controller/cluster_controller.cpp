@@ -1,10 +1,10 @@
 /**
- *   Copyright (c) 2025 INESC TEC.
+ *   Copyright (c) 2026 INESC TEC.
  **/
 
-#include "cheferd/controller/cluster_controller.hpp"
+#include "shio/controller/cluster_controller.hpp"
 
-#include "cheferd/utils/rules_file_parser.hpp"
+#include "shio/utils/rules_file_parser.hpp"
 
 extern "C" {
 #include <fcntl.h>
@@ -12,7 +12,7 @@ extern "C" {
 #include <sys/types.h>
 }
 
-namespace cheferd {
+namespace shio {
 
 // ClusterController parameterized constructor.
 ClusterController::ClusterController (const std::string& upper_address,
@@ -491,4 +491,4 @@ void ClusterController::parse_rule_with_break (const std::string& rule,
     }
 }
 
-} // namespace cheferd
+} // namespace shio

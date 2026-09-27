@@ -1,13 +1,13 @@
 /**
- *   Copyright (c) 2025 INESC TEC.
+ *   Copyright (c) 2026 INESC TEC.
  **/
 
-#ifndef CHEFERD_LOCAL_CONTROL_APPLICATION_HPP
-#define CHEFERD_LOCAL_CONTROL_APPLICATION_HPP
+#ifndef SHIO_LOCAL_CONTROL_APPLICATION_HPP
+#define SHIO_LOCAL_CONTROL_APPLICATION_HPP
 
 #include "_deps/grpc-src/include/grpcpp/grpcpp.h"
-#include "cheferd/session/data_plane_session.hpp"
-#include "cheferd/session/handshake_session.hpp"
+#include "shio/session/data_plane_session.hpp"
+#include "shio/session/handshake_session.hpp"
 #include "control_application.hpp"
 
 #include <chrono>
@@ -36,7 +36,7 @@ using controllers_grpc_interface::SimplifiedHandshakeRaw;
 using grpc::Channel;
 using grpc::ClientContext;
 
-namespace cheferd {
+namespace shio {
 
 // Number of rounds for aggregated statistics.
 #define AGGREGATE_COLLECT_ROUNDS 5
@@ -302,6 +302,6 @@ public:
     void parse_rule (const std::string& rule, std::vector<std::string>* tokens, char c);
 };
 
-} // namespace cheferd
+} // namespace shio
 
-#endif // CHEFERD_LOCAL_CONTROL_APPLICATION_HPP
+#endif // SHIO_LOCAL_CONTROL_APPLICATION_HPP

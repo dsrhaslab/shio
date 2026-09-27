@@ -1,15 +1,15 @@
 /**
- *   Copyright (c) 2025 INESC TEC.
+ *   Copyright (c) 2026 INESC TEC.
  **/
 
-#ifndef CHEFERD_JOBS_CONFIG_FILE_PARSER_HPP
-#define CHEFERD_JOBS_CONFIG_FILE_PARSER_HPP
+#ifndef SHIO_JOBS_CONFIG_FILE_PARSER_HPP
+#define SHIO_JOBS_CONFIG_FILE_PARSER_HPP
 
-#include <cheferd/utils/options.hpp>
+#include <shio/utils/options.hpp>
 #include <unordered_map>
 #include <yaml-cpp/yaml.h>
 
-namespace cheferd {
+namespace shio {
 
 /**
  * JobsConfigFileParser class.
@@ -43,6 +43,6 @@ private:
      */
     void process_jobs (YAML::Node jobs);
 };
-} // namespace cheferd
+} // namespace shio
 
-#endif // CHEFERD_JOBS_CONFIG_FILE_PARSER_HPP
+#endif // SHIO_JOBS_CONFIG_FILE_PARSER_HPP

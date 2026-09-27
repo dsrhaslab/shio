@@ -1,18 +1,18 @@
 /**
- *   Copyright (c) 2025 INESC TEC.
+ *   Copyright (c) 2026 INESC TEC.
  **/
 
-#ifndef CHEFERD_HANDSHAKE_SESSION_HPP
-#define CHEFERD_HANDSHAKE_SESSION_HPP
+#ifndef SHIO_HANDSHAKE_SESSION_HPP
+#define SHIO_HANDSHAKE_SESSION_HPP
 
-#include "cheferd/networking/interface/paio_interface.hpp"
-#include "cheferd/networking/stage_response/stage_response.hpp"
-#include "cheferd/networking/stage_response/stage_response_ack.hpp"
-#include "cheferd/networking/stage_response/stage_response_handshake.hpp"
+#include "shio/networking/interface/paio_interface.hpp"
+#include "shio/networking/stage_response/stage_response.hpp"
+#include "shio/networking/stage_response/stage_response_ack.hpp"
+#include "shio/networking/stage_response/stage_response_handshake.hpp"
 #include "session.hpp"
 
-#include <cheferd/utils/logging.hpp>
-#include <cheferd/utils/options.hpp>
+#include <shio/utils/logging.hpp>
+#include <shio/utils/options.hpp>
 #include <condition_variable>
 #include <cstdio>
 #include <iostream>
@@ -20,7 +20,7 @@
 #include <queue>
 #include <unistd.h>
 
-namespace cheferd {
+namespace shio {
 
 /**
  * HandshakeSession class.
@@ -70,6 +70,6 @@ public:
      */
     void StartSession ();
 };
-} // namespace cheferd
+} // namespace shio
 
-#endif // CHEFERD_HANDSHAKE_SESSION_HPP
+#endif // SHIO_HANDSHAKE_SESSION_HPP

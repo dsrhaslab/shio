@@ -1,10 +1,10 @@
 /**
- *   Copyright (c) 2025 INESC TEC.
+ *   Copyright (c) 2026 INESC TEC.
  **/
 
-#include "cheferd/networking/stage_response/stage_response_handshake.hpp"
+#include "shio/networking/stage_response/stage_response_handshake.hpp"
 
-namespace cheferd {
+namespace shio {
 
 // StageResponseHandshake default constructor.
 StageResponseHandshake::StageResponseHandshake ()
@@ -86,4 +86,4 @@ std::string StageResponseHandshake::toString () const
     return stream.str ();
 }
 
-} // namespace cheferd
+} // namespace shio

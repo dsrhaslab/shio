@@ -1,17 +1,17 @@
 /**
- *   Copyright (c) 2025 INESC TEC.
+ *   Copyright (c) 2026 INESC TEC.
  **/
 
-#ifndef CHEFERD_SESSION_HPP
-#define CHEFERD_SESSION_HPP
+#ifndef SHIO_SESSION_HPP
+#define SHIO_SESSION_HPP
 
-#include "cheferd/networking/interface/local_interface.hpp"
-#include "cheferd/networking/stage_response/stage_response.hpp"
-#include "cheferd/networking/stage_response/stage_response_ack.hpp"
-#include "cheferd/networking/stage_response/stage_response_handshake.hpp"
+#include "shio/networking/interface/local_interface.hpp"
+#include "shio/networking/stage_response/stage_response.hpp"
+#include "shio/networking/stage_response/stage_response_ack.hpp"
+#include "shio/networking/stage_response/stage_response_handshake.hpp"
 
-#include <cheferd/utils/logging.hpp>
-#include <cheferd/utils/options.hpp>
+#include <shio/utils/logging.hpp>
+#include <shio/utils/options.hpp>
 #include <condition_variable>
 #include <cstdio>
 #include <iostream>
@@ -20,7 +20,7 @@
 #include <thread>
 #include <unistd.h>
 
-namespace cheferd {
+namespace shio {
 
 /**
  * Session class.
@@ -144,5 +144,5 @@ public:
     std::unique_ptr<StageResponse> GetResult ();
 };
 
-} // namespace cheferd
-#endif // CHEFERD_SESSION_HPP
+} // namespace shio
+#endif // SHIO_SESSION_HPP

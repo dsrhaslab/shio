@@ -1,12 +1,12 @@
 /**
- *   Copyright (c) 2025 INESC TEC.
+ *   Copyright (c) 2026 INESC TEC.
  **/
 
-#ifndef CHEFERD_PAIO_INTERFACE_HPP
-#define CHEFERD_PAIO_INTERFACE_HPP
+#ifndef SHIO_PAIO_INTERFACE_HPP
+#define SHIO_PAIO_INTERFACE_HPP
 
-#include "cheferd/networking/stage_response/stage_response.hpp"
-#include "cheferd/utils/logging.hpp"
+#include "shio/networking/stage_response/stage_response.hpp"
+#include "shio/utils/logging.hpp"
 #include "southbound_interface.hpp"
 
 #include <cstdio>
@@ -18,7 +18,7 @@
 #include <sys/un.h>
 #include <unistd.h>
 
-namespace cheferd {
+namespace shio {
 
 /**
  * PAIOInterface class.
@@ -196,6 +196,6 @@ public:
         ControlOperation* operation,
         StatsDataMetadataRaw& stats_tf_object);
 };
-} // namespace cheferd
+} // namespace shio
 
-#endif // CHEFERD_PAIO_INTERFACE_HPP
+#endif // SHIO_PAIO_INTERFACE_HPP

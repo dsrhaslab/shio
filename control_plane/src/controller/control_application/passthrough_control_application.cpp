@@ -1,10 +1,10 @@
 /**
- *   Copyright (c) 2025 INESC TEC.
+ *   Copyright (c) 2026 INESC TEC.
  **/
 
-#include "cheferd/controller/control_application/passthrough_control_application.hpp"
+#include "shio/controller/control_application/passthrough_control_application.hpp"
 
-#include "cheferd/utils/rules_file_parser.hpp"
+#include "shio/utils/rules_file_parser.hpp"
 
 #include <chrono>
 #include <list>
@@ -17,7 +17,7 @@ extern "C" {
 #include <sys/types.h>
 }
 
-namespace cheferd {
+namespace shio {
 
 // PassthroughControlApplication parameterized constructor.
 PassthroughControlApplication::PassthroughControlApplication (const std::string& local_address,
@@ -441,4 +441,4 @@ PStatus PassthroughControlApplication::mark_stage_ready (const std::string& stag
     return status;
 }
 
-} // namespace cheferd
+} // namespace shio

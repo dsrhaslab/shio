@@ -1,14 +1,14 @@
 /**
- *   Copyright (c) 2025 INESC TEC.
+ *   Copyright (c) 2026 INESC TEC.
  **/
 
-#ifndef CHEFERD_SOUTHBOUND_INTERFACE_HPP
-#define CHEFERD_SOUTHBOUND_INTERFACE_HPP
+#ifndef SHIO_SOUTHBOUND_INTERFACE_HPP
+#define SHIO_SOUTHBOUND_INTERFACE_HPP
 
-#include "cheferd/utils/status.hpp"
+#include "shio/utils/status.hpp"
 #include "interface_definitions.hpp"
 
-namespace cheferd {
+namespace shio {
 
 /**
  * SouthboundInterface class.
@@ -108,6 +108,6 @@ public:
      */
     virtual PStatus collect_statistics (int socket, ControlOperation* operation) = 0;
 };
-} // namespace cheferd
+} // namespace shio
 
-#endif // CHEFERD_SOUTHBOUND_INTERFACE_HPP
+#endif // SHIO_SOUTHBOUND_INTERFACE_HPP

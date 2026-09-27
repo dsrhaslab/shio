@@ -1,10 +1,10 @@
 /**
- *   Copyright (c) 2025 INESC TEC.
+ *   Copyright (c) 2026 INESC TEC.
  **/
 
-#include "cheferd/controller/control_application/supervisor_control_application.hpp"
+#include "shio/controller/control_application/supervisor_control_application.hpp"
 
-#include "cheferd/utils/rules_file_parser.hpp"
+#include "shio/utils/rules_file_parser.hpp"
 
 extern "C" {
 #include <fcntl.h>
@@ -13,7 +13,7 @@ extern "C" {
 
 #include <algorithm> // for std::min
 
-namespace cheferd {
+namespace shio {
 
 // SupervisorControlApplication parameterized constructor.
 SupervisorControlApplication::SupervisorControlApplication (std::vector<std::string>* rules_ptr,
@@ -672,4 +672,4 @@ void SupervisorControlApplication::collect_statistics_local_control_application 
     }
 }
 
-} // namespace cheferd
+} // namespace shio

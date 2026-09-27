@@ -1,12 +1,12 @@
 /**
- *   Copyright (c) 2025 INESC TEC.
+ *   Copyright (c) 2026 INESC TEC.
  **/
 
-#include "cheferd/utils/jobs_config_file_parser.hpp"
+#include "shio/utils/jobs_config_file_parser.hpp"
 
-#include "cheferd/utils/logging.hpp"
+#include "shio/utils/logging.hpp"
 
-namespace cheferd {
+namespace shio {
 
 // JobsConfigFileParser parameterized constructor.
 JobsConfigFileParser::JobsConfigFileParser (const std::string& path) : jobs_name_to_priority {}
@@ -37,4 +37,4 @@ void JobsConfigFileParser::process_jobs (YAML::Node jobs)
     }
 }
 
-} // namespace cheferd
+} // namespace shio
