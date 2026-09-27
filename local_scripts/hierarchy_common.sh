@@ -18,12 +18,17 @@
 # Each controller is started from the build directory as:
 #   ./shio_exec --config_file <LOG_DIR>/configs/<controller>_config_file
 #
-# and each job's data plane stages as:
-#   data_plane_stage <job_name> <stage_env> <stage_user> /tmp/<local_controller_address>.socket
+# and each job's data plane stages, depending on DATA_PLANE, as:
+#   synthetic: data_plane_stage <job_name> <stage_env> <stage_user> /tmp/<local_controller_address>.socket
+#   real:      LD_PRELOAD=libpadll.so trace_replayer <trace.csv> -1 <JOB_DURATION>
+#              (PADLL connects to the local controller at /tmp/<local_controller_address>.socket)
 #
 # Environment variables:
 #   BUILD_DIR       directory containing shio_exec (default: <control_plane>/build)
-#   DATA_PLANE_BIN  data plane stage binary
+#   DATA_PLANE      data plane used by the jobs: "synthetic" (synthetic data plane stage, randomly
+#                   generated metrics) or "real" (I/O traces replayed through PADLL)
+#                   (default: synthetic)
+#   DATA_PLANE_BIN  synthetic data plane stage binary
 #                   (default: <repo>/data_plane/synthetic_dp/build/data_plane_stage)
 #   STAGES_PER_JOB  number of data plane stages launched per job (default: 1). Stages of the
 #                   same job are told apart by their stage_env (1..STAGES_PER_JOB).
@@ -31,6 +36,18 @@
 #   JOB_CMD         custom command that starts a job, used instead of DATA_PLANE_BIN. It is
 #                   launched with SHIO_JOB_NAME and SHIO_SOCKET (the local controller UNIX
 #                   socket) exported.
+#   PADLL_LIB       PADLL library preloaded by real stages
+#                   (default: <repo>/data_plane/realistic_dp/paio_padll_dp/padll/build/libpadll.so)
+#   PAIO_LIB_DIR    directory containing libpaio
+#                   (default: <repo>/data_plane/realistic_dp/paio_padll_dp/paio/build)
+#   TRACE_REPLAYER  trace replayer binary
+#                   (default: <repo>/data_plane/realistic_dp/trace_replayer/trace_replayer)
+#   TRACES_DIR      directory with the collected traces
+#                   (default: <repo>/data_plane/realistic_dp/trace_replayer/traces_collected)
+#   JOB_APPS        space-separated application replayed by each job (in local controller order;
+#                   reused cyclically): gromacs, resnet, openfoam, or shufflenet
+#                   (default: "gromacs resnet openfoam")
+#   JOB_DURATION    seconds each real job replays its trace (default: 60)
 #   RESULTS_DIR     base directory for the results of each run (default: <repo>/results)
 #   LOG_DIR         directory for the logs of this run (default: <RESULTS_DIR>/<timestamp>).
 #                   The run's generated config files are written to <LOG_DIR>/configs.
@@ -43,7 +60,15 @@ REPO_DIR="$(dirname "$COMMON_DIR")"
 CONTROL_PLANE_DIR="$REPO_DIR/control_plane"
 
 BUILD_DIR="${BUILD_DIR:-$CONTROL_PLANE_DIR/build}"
+DATA_PLANE="${DATA_PLANE:-synthetic}"
 DATA_PLANE_BIN="${DATA_PLANE_BIN:-$REPO_DIR/data_plane/synthetic_dp/build/data_plane_stage}"
+REAL_DP_DIR="$REPO_DIR/data_plane/realistic_dp"
+PADLL_LIB="${PADLL_LIB:-$REAL_DP_DIR/paio_padll_dp/padll/build/libpadll.so}"
+PAIO_LIB_DIR="${PAIO_LIB_DIR:-$REAL_DP_DIR/paio_padll_dp/paio/build}"
+TRACE_REPLAYER="${TRACE_REPLAYER:-$REAL_DP_DIR/trace_replayer/trace_replayer}"
+TRACES_DIR="${TRACES_DIR:-$REAL_DP_DIR/trace_replayer/traces_collected}"
+JOB_APPS="${JOB_APPS:-gromacs resnet openfoam}"
+JOB_DURATION="${JOB_DURATION:-60}"
 STAGES_PER_JOB="${STAGES_PER_JOB:-1}"
 STAGE_USER="${STAGE_USER:-${USER:-shio}}"
 JOB_CMD="${JOB_CMD:-}"
@@ -79,6 +104,8 @@ LOCAL_JOB_NAMES=(N1V1 N1V2 N1V3)
 # Launched processes: NAMES[i] is the name (and log file) of the process with pid PIDS[i].
 NAMES=()
 PIDS=()
+# Pids of the launched jobs (their stages), waited on by wait_jobs.
+JOB_PIDS=()
 
 log () {
     echo "[$(date +%H:%M:%S)] $*"
@@ -210,10 +237,86 @@ launch_locals () {
     done
 }
 
-# launch_jobs. Launches each job (its data plane stages, or JOB_CMD). The local controller accepts
-# data plane stages on /tmp/<own_upper_address>.socket
+# trace_file <app> <stage_env>. Prints the trace replayed by a stage of an application. Traces
+# collected on several compute nodes (c1, c2, ...) are assigned to stages cyclically, and are
+# extracted from their zip on first use.
+trace_file () {
+    local app="$1" env="$2" dir zips count node
+    case "$app" in
+        gromacs) dir="$TRACES_DIR/gromacs_3072" ;;
+        resnet) dir="$TRACES_DIR/resnet50_4_nodes_4_gpus_4_epochs" ;;
+        openfoam) dir="$TRACES_DIR/openfoam" ;;
+        shufflenet) dir="$TRACES_DIR/tensorflow_shufflenet_1_epoch_1_node" ;;
+        *)
+            echo "Unknown application: $app (expected gromacs, resnet, openfoam, or shufflenet)" >&2
+            return 1
+            ;;
+    esac
+
+    count=$(ls "$dir"/c*_merged.zip 2>/dev/null | wc -l | tr -d ' ')
+    if [[ "$count" -eq 0 ]]; then
+        echo "No traces found in $dir" >&2
+        return 1
+    fi
+    node=$(((env - 1) % count + 1))
+
+    if [[ ! -d "$dir/c${node}_merged" ]]; then
+        (cd "$dir" && unzip -o -q "c${node}_merged.zip")
+    fi
+    ls "$dir/c${node}_merged/"* | head -n 1
+}
+
+# launch_real_stage <name> <job name> <stage_env> <app> <socket>. Launches a stage of the real data
+# plane: the trace replayer, with PADLL preloaded and connected to the local controller.
+launch_real_stage () {
+    local name="$1" job_name="$2" env="$3" app="$4" socket="$5" trace
+    trace=$(trace_file "$app" "$env")
+    launch "$name" env \
+        paio_name="$job_name" \
+        paio_env="$env" \
+        padll_workflows=2 \
+        paio_stage_opt=1 \
+        cheferd_local_address="$socket" \
+        LD_LIBRARY_PATH="$PAIO_LIB_DIR${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}" \
+        LD_PRELOAD="$PADLL_LIB" \
+        "$TRACE_REPLAYER" "$trace" -1 "$JOB_DURATION"
+    log "  $name replays $app ($trace) for ${JOB_DURATION}s"
+}
+
+# check_data_plane. Checks that the binaries of the selected data plane exist.
+check_data_plane () {
+    case "$DATA_PLANE" in
+        synthetic)
+            if [[ ! -x "$DATA_PLANE_BIN" ]]; then
+                log "Data plane stage binary not found: $DATA_PLANE_BIN"
+                log "Build it (cd data_plane/synthetic_dp && mkdir -p build && cd build && cmake .. && cmake --build .) or set DATA_PLANE_BIN."
+                return 1
+            fi
+            ;;
+        real)
+            if [[ ! -f "$PADLL_LIB" || ! -x "$TRACE_REPLAYER" ]]; then
+                log "Real data plane not found (PADLL_LIB=$PADLL_LIB, TRACE_REPLAYER=$TRACE_REPLAYER)."
+                log "Build PAIO, PADLL, and the trace replayer (see the Dockerfile) or set these variables."
+                return 1
+            fi
+            ;;
+        *)
+            log "Unknown DATA_PLANE: $DATA_PLANE (expected synthetic or real)"
+            return 1
+            ;;
+    esac
+}
+
+# launch_jobs. Launches each job: JOB_CMD, or STAGES_PER_JOB stages of the selected data plane. The
+# local controller accepts data plane stages on /tmp/<own_upper_address>.socket
 launch_jobs () {
-    local i id env socket
+    local i id env socket apps app
+    if [[ -z "$JOB_CMD" ]] && ! check_data_plane; then
+        log "Skipping job launch."
+        return
+    fi
+
+    apps=($JOB_APPS)
     for i in "${!LOCAL_IDS[@]}"; do
         id="${LOCAL_IDS[$i]}"
         socket="/tmp/$HOST:${LOCAL_PORTS[$i]}.socket"
@@ -221,15 +324,27 @@ launch_jobs () {
         if [[ -n "$JOB_CMD" ]]; then
             SHIO_JOB_NAME="${LOCAL_JOB_NAMES[$i]}" SHIO_SOCKET="$socket" \
                 launch "job${id}" bash -c "$JOB_CMD"
-        elif [[ -x "$DATA_PLANE_BIN" ]]; then
-            for env in $(seq 1 "$STAGES_PER_JOB"); do
+            JOB_PIDS+=("${PIDS[${#PIDS[@]} - 1]}")
+            continue
+        fi
+
+        app="${apps[$((i % ${#apps[@]}))]}"
+        for env in $(seq 1 "$STAGES_PER_JOB"); do
+            if [[ "$DATA_PLANE" == "real" ]]; then
+                launch_real_stage "job${id}_stage${env}" "${LOCAL_JOB_NAMES[$i]}" "$env" "$app" "$socket"
+            else
                 launch "job${id}_stage${env}" "$DATA_PLANE_BIN" \
                     "${LOCAL_JOB_NAMES[$i]}" "$env" "$STAGE_USER" "$socket"
-            done
-        else
-            log "Data plane stage binary not found: $DATA_PLANE_BIN; skipping job launch."
-            log "Build it (cd data_plane/synthetic_dp && mkdir -p build && cd build && cmake .. && cmake --build .) or set DATA_PLANE_BIN."
-            return
-        fi
+            fi
+            JOB_PIDS+=("${PIDS[${#PIDS[@]} - 1]}")
+        done
+    done
+}
+
+# wait_jobs. Waits for every launched job to finish.
+wait_jobs () {
+    local pid
+    for pid in ${JOB_PIDS[@]+"${JOB_PIDS[@]}"}; do
+        wait "$pid" 2>/dev/null || true
     done
 }
