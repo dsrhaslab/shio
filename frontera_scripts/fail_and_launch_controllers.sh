@@ -8,19 +8,17 @@ CLUSTER_1=${START_CLUSTER_NODE_INDEX}
 CLUSTER_2=$((START_CLUSTER_NODE_INDEX + 1))
 CLUSTER_3=$((START_CLUSTER_NODE_INDEX + 2))
 CLUSTER_4=$((START_CLUSTER_NODE_INDEX + 3))
-START_LOCAL_NODE_INDEX=$((START_CLUSTER_NODE_INDEX+NR_CLUSTER_NODES))
-END_LOCAL_NODE_INDEX=$((START_LOCAL_NODE_INDEX+NR_LOCAL_NODES-1))
+START_LOCAL_NODE_INDEX=$((START_CLUSTER_NODE_INDEX + NR_CLUSTER_NODES))
+END_LOCAL_NODE_INDEX=$((START_LOCAL_NODE_INDEX + NR_LOCAL_NODES - 1))
 
 sleep 1100
-
-
 
 echo "FAILING GLOBAL CONTROLLER"
 
 #Kill cluster 1
 #ibrun -n 1 -o ${CLUSTER_1} ./kill_and_launch_process.sh cheferd_exec "cd $PWD;cd cheferd/ ;./cheferd_exec --config_file ../files/cluster_config_file_c1_bck_2 cheferd_cluster_machine3 > ../output/cluster_output_node1_machine3.out" &
 
-sleep 180 
+sleep 180
 
 #Kill global
 #ibrun -n 1 -o ${GLOBAL_INDEX} ./kill_and_launch_process.sh cheferd_exec "cd $PWD;cd cheferd/ ;./cheferd_exec --config_file ../files/global_config_file_bck_2 cheferd_global_machine3 > ../output/global_output_machine3.out" &
@@ -56,4 +54,3 @@ sleep 1040
 #done
 
 #ibrun -n 1 -o ${GLOBAL_INDEX} ./kill_process.sh cheferd_exec
-

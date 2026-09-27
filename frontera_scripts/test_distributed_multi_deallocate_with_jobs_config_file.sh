@@ -1,7 +1,4 @@
-
 cd $SCRATCH
-
-
 
 EXP=${1}
 VERSION=${2}
@@ -66,7 +63,7 @@ mkdir output/
 
 sleep 60
 
-GLOBAL_INDEX=${BOOTSTRAP_NODES} 
+GLOBAL_INDEX=${BOOTSTRAP_NODES}
 
 #Launch global controller
 ibrun -n 1 -o ${GLOBAL_INDEX} global_job_single_with_prep_and_backup.sh &
@@ -76,15 +73,14 @@ ibrun -n 1 -o ${GLOBAL_INDEX} global_job_single_with_prep_and_backup.sh &
 sleep 30
 
 #Launch cluster controllers
-for CLUSTER_NODE_ID in $(seq 1 ${CLUSTER_NODES})
-do
-   #offset one for the commander node
-   beforenodes=$((CLUSTER_NODE_ID+BOOTSTRAP_NODES))
+for CLUSTER_NODE_ID in $(seq 1 ${CLUSTER_NODES}); do
+    #offset one for the commander node
+    beforenodes=$((CLUSTER_NODE_ID + BOOTSTRAP_NODES))
 
-   ibrun -n 1 -o ${beforenodes} cluster_job_single_and_backup.sh ${CLUSTER_NODE_ID} &   
-   #ibrun -n 1 -o ${beforenodes} cluster_job_single.sh ${CLUSTER_NODE_ID} &   
+    ibrun -n 1 -o ${beforenodes} cluster_job_single_and_backup.sh ${CLUSTER_NODE_ID} &
+    #ibrun -n 1 -o ${beforenodes} cluster_job_single.sh ${CLUSTER_NODE_ID} &
 
-   sleep 1
+    sleep 1
 done
 
 #####
@@ -92,31 +88,27 @@ done
 sleep 60
 
 GLOBAL_NODES=1
-BASE_NODES=$((BOOTSTRAP_NODES+GLOBAL_NODES+CLUSTER_NODES))
-TOTAL_NODES=$((BASE_NODES+LOCAL_NODES))
+BASE_NODES=$((BOOTSTRAP_NODES + GLOBAL_NODES + CLUSTER_NODES))
+TOTAL_NODES=$((BASE_NODES + LOCAL_NODES))
 
 echo "Before launch"
 
-LOCAL_BOOTSTRAP_NODES=$((BOOTSTRAP_NODES-1))
-PER_BOOTSTRAP_NODE=$((CLUSTER_NODES/LOCAL_BOOTSTRAP_NODES))
+LOCAL_BOOTSTRAP_NODES=$((BOOTSTRAP_NODES - 1))
+PER_BOOTSTRAP_NODE=$((CLUSTER_NODES / LOCAL_BOOTSTRAP_NODES))
 
 #Launch bootstrap controller to start local controllers
-for BOOTSTRAP_NODE in $(seq 1 ${LOCAL_BOOTSTRAP_NODES})
-do
-   ibrun -n 1 -o ${BOOTSTRAP_NODE} launch_local_controllers.sh ${BOOTSTRAP_NODE} ${PER_BOOTSTRAP_NODE} ${PER_CLUSTER_NODES} ${PER_NODE_JOBS} ${BASE_NODES} ${TOTAL_NODES} &
-    
-done
+for BOOTSTRAP_NODE in $(seq 1 ${LOCAL_BOOTSTRAP_NODES}); do
+    ibrun -n 1 -o ${BOOTSTRAP_NODE} launch_local_controllers.sh ${BOOTSTRAP_NODE} ${PER_BOOTSTRAP_NODE} ${PER_CLUSTER_NODES} ${PER_NODE_JOBS} ${BASE_NODES} ${TOTAL_NODES} &
 
+done
 
 ######
 #Dependability Section
 
-./fail_and_launch_controllers.sh ${GLOBAL_INDEX} ${CLUSTER_NODES} ${LOCAL_NODES} > output/fail_and_launch_output.out & 
-
+./fail_and_launch_controllers.sh ${GLOBAL_INDEX} ${CLUSTER_NODES} ${LOCAL_NODES} >output/fail_and_launch_output.out &
 
 wait
 
 sleep 5
 
-rm -fr /tmp/padll-* /tmp/*520*.socket /tmp/app*.socket  
-
+rm -fr /tmp/padll-* /tmp/*520*.socket /tmp/app*.socket

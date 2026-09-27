@@ -3,7 +3,7 @@
 SERVICE=cheferd_exec
 
 is_running() {
-    pgrep "$SERVICE" || true > /dev/null
+    pgrep "$SERVICE" || true >/dev/null
 }
 
 if is_running; then
