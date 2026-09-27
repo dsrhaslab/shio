@@ -103,7 +103,7 @@ The global and cluster controllers run as primary-backup pairs. Each backup send
 1. kills each primary controller in sequence (global, then each cluster controller), so that its backup takes over;
 2. terminates some jobs (`EARLY_JOBS`);
 3. ends the remaining jobs one at a time;
-4. stops all controllers.
+4. terminates.
 
 <p align="center"> <img src=".docs/backup-setup.svg" alt="Local hierarchy with backup controllers and failure scenario" width="900"/> </p>
 
@@ -125,7 +125,7 @@ cd /shio
 
 Each global and cluster controller runs alone, and each job replays the trace of an application (by default, GROMACS, ResNet, and OpenFOAM) for `JOB_DURATION` seconds. When all jobs finish, the controllers are stopped. The real data plane can also be used with the other two scripts by setting `DATA_PLANE=real` (*e.g.,* `DATA_PLANE=real ./local_scripts/launch_hierarchy.sh`).
 
-> ⚠️ PADLL intercepts I/O through `LD_PRELOAD` and requires Linux, so run the real data plane inside the container. The trace replayer issues real I/O to `/tmp/replay_files`, which grows with the duration of the run.
+> ⚠️ PADLL intercepts I/O through `LD_PRELOAD` and requires Linux, so run the real data plane inside the container. 
 
 The scripts accept environment variables to change, for example, the number of stages per job, the applications replayed, or the timing of the failure scenario. See [`local_scripts/`](local_scripts/README.md) for the full list and examples.
 
