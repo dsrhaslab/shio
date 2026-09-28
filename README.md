@@ -115,6 +115,8 @@ Each global and cluster controller runs alone, and each job replays the trace of
 
 > ⚠️ PADLL intercepts I/O through `LD_PRELOAD` and requires Linux, so run the realistic data plane inside the container. 
 
+> 💡 **Note:** The PADLL version in this artifact was modified so that intercepted I/O requests are not forwarded to the file system. Each request is still rate-limited according to the control plane's rules and counted in the metrics reported to the controllers, but it is then discarded instead of being issued. This is how the paper's experiments replayed production traces without saturating Frontera's shared parallel file system. As a result, you don't need to worry about where the replayed I/O is sent: the replayed reads and writes never reach any storage device (only the trace files are read, and a few empty working files are created in `/tmp/replay_files`), and the results are unaffected, since the control plane only observes and acts on the rate of I/O requests.
+
 The scripts accept environment variables to change, for example, the number of stages per job, the applications replayed, or the timing of the failure scenario. See [`local_scripts/`](local_scripts/README.md) for the full list and examples.
 
 **Hierarchy with backup controllers and failure injection:**
