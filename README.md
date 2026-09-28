@@ -34,6 +34,25 @@ This artifact is organized with the following contributions:
      (compute node)      (compute node)         (compute node)
 ```
 
+## 📂 Repository structure
+
+```
+shio/
+├── control_plane/           # SHIO controllers (C++, gRPC)
+│   ├── src/, include/       #   controllers, control applications, networking
+│   ├── protos/              #   gRPC interface between controllers
+│   └── files/               #   example controller, policy, and job configuration files
+├── data_plane/
+│   ├── synthetic_dp/        # synthetic data plane stage
+│   └── realistic_dp/
+│       ├── paio_padll_dp/   # PAIO and PADLL
+│       └── trace_replayer/  # trace replayer and collected I/O traces
+├── local_scripts/           # launch a controller hierarchy on a single machine
+├── .docs/                   # figures used in this README
+├── frontera_scripts/        # experiment scripts for the Frontera supercomputer
+└── Dockerfile
+```
+
 ## 🖥️ Hardware and OS specifications of the reported experiments
 
 The experiments in the paper were conducted on compute nodes of the [Frontera](https://tacc.utexas.edu/systems/frontera/) supercomputer, each with the following configuration:
@@ -90,7 +109,29 @@ Inside the container, three scripts launch a full controller hierarchy on the lo
 
 Jobs can use either data plane:
 - **synthetic** (default): the synthetic data plane stage, which does not report real I/O metrics;
-- **real**: the trace replayer, with PADLL intercepting its I/O and enforcing the control plane's rules. Each job replays the collected I/O traces of an HPC application (GROMACS, ResNet, OpenFOAM, or ShuffleNet).
+- **realistic**: the trace replayer, with PADLL intercepting its I/O and enforcing the control plane's rules. Each job replays the collected I/O traces of an HPC application (GROMACS, ResNet, OpenFOAM, or ShuffleNet).
+
+**Hierarchy without backup controllers:**
+
+```bash
+cd /shio
+./local_scripts/launch_hierarchy_no_backup.sh
+```
+
+Each global and cluster controller runs alone, and the hierarchy keeps running until `Ctrl-C`.
+
+**Hierarchy with the realistic data plane:**
+
+```bash
+cd /shio
+./local_scripts/launch_hierarchy_real_dp.sh
+```
+
+Each global and cluster controller runs alone, and each job replays the trace of an application (by default, GROMACS, ResNet, and OpenFOAM) for `JOB_DURATION` seconds. When all jobs finish, the controllers are stopped. The real data plane can also be used with the other two scripts by setting `DATA_PLANE=real` (*e.g.,* `DATA_PLANE=real ./local_scripts/launch_hierarchy.sh`).
+
+> ⚠️ PADLL intercepts I/O through `LD_PRELOAD` and requires Linux, so run the realistic data plane inside the container. 
+
+The scripts accept environment variables to change, for example, the number of stages per job, the applications replayed, or the timing of the failure scenario. See [`local_scripts/`](local_scripts/README.md) for the full list and examples.
 
 **Hierarchy with backup controllers and failure injection:**
 
@@ -107,28 +148,6 @@ The global and cluster controllers run as primary-backup pairs. Each backup send
 
 <p align="center"> <img src=".docs/backup-setup.svg" alt="Local hierarchy with backup controllers and failure scenario" width="900"/> </p>
 
-**Hierarchy without backup controllers:**
-
-```bash
-cd /shio
-./local_scripts/launch_hierarchy_no_backup.sh
-```
-
-Each global and cluster controller runs alone, and the hierarchy keeps running until `Ctrl-C`.
-
-**Hierarchy with the real data plane:**
-
-```bash
-cd /shio
-./local_scripts/launch_hierarchy_real_dp.sh
-```
-
-Each global and cluster controller runs alone, and each job replays the trace of an application (by default, GROMACS, ResNet, and OpenFOAM) for `JOB_DURATION` seconds. When all jobs finish, the controllers are stopped. The real data plane can also be used with the other two scripts by setting `DATA_PLANE=real` (*e.g.,* `DATA_PLANE=real ./local_scripts/launch_hierarchy.sh`).
-
-> ⚠️ PADLL intercepts I/O through `LD_PRELOAD` and requires Linux, so run the real data plane inside the container. 
-
-The scripts accept environment variables to change, for example, the number of stages per job, the applications replayed, or the timing of the failure scenario. See [`local_scripts/`](local_scripts/README.md) for the full list and examples.
-
 📈 **Output:**
 
 Each run writes its logs (one file per controller and per stage) and the generated controller configuration files to `results/<timestamp>/`.
@@ -140,25 +159,6 @@ Each run writes its logs (one file per controller and per stage) and the generat
 The scripts used for the paper's experiments on the Frontera supercomputer, and the instructions to run them, are in [`frontera_scripts/`](frontera_scripts/README.md).
 
 ---
-
-## 📂 Repository structure
-
-```
-shio/
-├── control_plane/           # SHIO controllers (C++, gRPC)
-│   ├── src/, include/       #   controllers, control applications, networking
-│   ├── protos/              #   gRPC interface between controllers
-│   └── files/               #   example controller, policy, and job configuration files
-├── data_plane/
-│   ├── synthetic_dp/        # synthetic data plane stage
-│   └── realistic_dp/
-│       ├── paio_padll_dp/   # PAIO and PADLL
-│       └── trace_replayer/  # trace replayer and collected I/O traces
-├── local_scripts/           # launch a controller hierarchy on a single machine
-├── .docs/                   # figures used in this README
-├── frontera_scripts/        # experiment scripts for the Frontera supercomputer
-└── Dockerfile
-```
 
 ## 📄 License
 
@@ -175,4 +175,4 @@ This work is funded by national funds through FCT – Fundação para a Ciência
 
 ## 📬 Contact
 
-For questions, please contact [Mariana Miranda](mailto:mariana.m.miranda@inesctec.pt).
+For questions, please contact [Mariana Miranda](mailto:mariana.m.miranda@inesctec.pt), [João Paulo](mailto:joao.t.paulo@inesctec.pt) and/or [Ricardo Macedo](mailto:ricardo.g.macedo@inesctec.pt).
