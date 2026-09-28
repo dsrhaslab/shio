@@ -53,7 +53,9 @@ LocalControlApplication::LocalControlApplication (std::vector<std::string>* rule
     pending_data_sessions_ {},
     operation_to_channel_object {},
     m_active_data_plane_sessions { 0 },
-    m_pending_data_plane_sessions { 0 }
+    m_pending_data_plane_sessions { 0 },
+    last_stats_global {},
+    stats_backlogged { false }
 {
     auto channel = grpc::CreateChannel (upper_address, grpc::InsecureChannelCredentials ());
     stub_ = ControllerToUpper::NewStub (channel);

@@ -463,8 +463,8 @@ void SupervisorControlApplication::compute_psfa_per_op_phase1 (const std::string
                         auto rate_value
                             = std::min (controller_total_usage_per_priority + threshold_value,
                                 controller_fair_share);
-                        // Assign at least 100mb to controller
-                        uint64_t min_per_controller = 104857600;
+                        // Assign at least 1MiB to controller
+                        uint64_t min_per_controller = 1048576;
                         controller_rate = std::max (rate_value, min_per_controller);
                         controller_rates[controller_address][operation] += controller_rate;
 
@@ -472,7 +472,7 @@ void SupervisorControlApplication::compute_psfa_per_op_phase1 (const std::string
                         std::lock_guard<std::mutex> lock (controller_rates_mutex);
                         auto rate_value = std::min (controller_total_demand_per_priority,
                             controller_fair_share);
-                        uint64_t min_per_controller = 104857600;
+                        uint64_t min_per_controller = 1048576;
                         controller_rate = std::max (rate_value, min_per_controller);
                         controller_rates[controller_address][operation] += controller_rate;
                     }
@@ -482,7 +482,7 @@ void SupervisorControlApplication::compute_psfa_per_op_phase1 (const std::string
                     total_jobs -= nrjobs;
                     std::lock_guard<std::mutex> lock (controller_rates_mutex);
                     // Old version: controller_rate can exceed the remaining rate (because of the
-                    // 100MiB minimum), making the unsigned subtraction wrap around.
+                    // 1MiB minimum), making the unsigned subtraction wrap around.
                     // left_iops_per_operation -= controller_rate;
                     if (controller_rate >= left_iops_per_operation) {
                         left_iops_per_operation = 0;
