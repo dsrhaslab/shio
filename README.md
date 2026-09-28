@@ -10,12 +10,13 @@ SHIO is a Software-Defined Storage (SDS) control plane that enforces storage Qua
 - **The global controller** distributes resources among the cluster controllers and coordinates jobs that span several of them;
 - **Backup controllers** can take over the global or a cluster controller when it fails.
 
+<p align="center"> <img src=".docs/shio_explained.png" alt="SHIO high-level architecture" width="500"/> </p>
+
+
 In the paper, SHIO coordinates up to 100,000 data plane stages, reducing control latency from ≈1 s to ≈55 ms.
 
 This artifact includes SHIO's control plane, a synthetic and a real ([PADLL](https://github.com/dsrhaslab/padll)-based) data plane with I/O traces of HPC applications, and scripts to run SHIO locally and on the Frontera supercomputer.
 
-
-<p align="center"> <img src=".docs/shio_explained.png" alt="SHIO high-level architecture" width="800"/> </p>
 
 ## 📂 Repository structure
 
