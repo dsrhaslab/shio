@@ -5,34 +5,17 @@ This repository contains the artifact of the paper **"A Tale of Scale: Enabling 
 ## 📖 Introduction to SHIO
 
 **Overview:**
-SHIO is a hierarchical Software-Defined Storage (SDS) control plane that enforces system-wide storage Quality of Service (QoS) for jobs running on large-scale HPC systems. Data plane stages, deployed on each compute node, intercept and rate-limit the I/O requests that jobs submit to the shared Parallel File System (PFS). The control plane collects I/O metrics from these stages, computes storage rules, and enforces them, so that policies such as a maximum aggregate PFS throughput, fair sharing, or job priorities hold across the whole infrastructure.
+SHIO is a Software-Defined Storage (SDS) control plane that enforces storage Quality of Service (QoS) across all jobs of large-scale HPC systems. Data plane stages on each compute node intercept and rate-limit the I/O that jobs submit to the shared file system, following rules computed by a hierarchy of controllers:
+- **Cluster controllers** each manage a group of compute nodes and control their jobs independently;
+- **The global controller** distributes resources among the cluster controllers and coordinates jobs that span several of them;
+- **Backup controllers** can take over the global or a cluster controller when it fails.
 
-Unlike state-of-the-art centralized and hierarchical designs, SHIO delegates control logic across all levels of its hierarchy:
-- **Cluster controllers** manage a subset of compute nodes and independently compute and enforce rules for the jobs whose stages fall entirely under them (*governor*). For jobs spanning several cluster controllers, they aggregate metrics and forward rules on behalf of the global controller (*relay*).
-- **The global controller** distributes resource shares among all controllers (*orchestrator*) and directly manages distributed jobs that span multiple cluster controllers (*governor*).
-- **Prosha**, a proportional demand-aware hierarchical resource-sharing algorithm, lets the orchestrator distribute resources among controllers based on their aggregated demand and usage, so that each governor can run PSFA for its own jobs without centralizing global state.
-- **Dependability**: every global and cluster controller can be paired with a hot-swap backup that monitors it through heartbeats, takes over its network addresses on failure, and rebuilds its state through a collection step.
+In the paper, SHIO coordinates up to 100,000 data plane stages, reducing control latency from ≈1 s to ≈55 ms.
 
-In the paper, SHIO coordinates up to 100,000 data plane stages on 2,000 compute nodes of the Frontera supercomputer, reducing control cycle latency from ≈1 second (state-of-the-art hierarchical designs) to ≈55 ms.
+This artifact includes SHIO's control plane, a synthetic and a real ([PADLL](https://github.com/dsrhaslab/padll)-based) data plane with I/O traces of HPC applications, and scripts to run SHIO locally and on the Frontera supercomputer.
 
-This artifact is organized with the following contributions:
-- SHIO's control plane (global, cluster, and local controllers, with primary-backup fault tolerance);
-- A synthetic data plane stage, used for stress-testing the control plane at scale;
-- A realistic data plane built on [PAIO](https://github.com/dsrhaslab/paio) and [PADLL](https://github.com/dsrhaslab/padll), plus a trace replayer and the I/O traces of GROMACS, OpenFOAM, ResNet, and ShuffleNet;
-- Scripts to run SHIO locally and to reproduce the experiments on the Frontera supercomputer.
 
-```
-                              Global Controller
-                      (orchestrator + governor [+ backup])
-                         /                          \
-          Cluster Controller                  Cluster Controller
-       (governor + relay [+ backup])       (governor + relay [+ backup])
-            /            \                           |
-   Local Controller   Local Controller        Local Controller
-          |                  |                       |
-  Data Plane Stage(s)  Data Plane Stage(s)   Data Plane Stage(s)
-     (compute node)      (compute node)         (compute node)
-```
+<p align="center"> <img src=".docs/shio_explained.png" alt="SHIO high-level architecture" width="800"/> </p>
 
 ## 📂 Repository structure
 
